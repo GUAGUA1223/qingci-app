@@ -9,11 +9,22 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
-    "ios": { "supportsTablet": true },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
     "android": {
-      "adaptiveIcon": { "backgroundColor": "#ffffff" },
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
       "package": "com.qingci.app"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9b5ca370-8aa1-4086-8720-698f74ccb906"
+      }
     }
   }
 }
