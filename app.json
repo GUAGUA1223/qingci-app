@@ -4,6 +4,7 @@
     "slug": "qingci-app",
     "version": "1.0.0",
     "orientation": "portrait",
+    "scheme": "qingci-app",
     "userInterfaceStyle": "light",
     "splash": {
       "resizeMode": "contain",
@@ -20,6 +21,9 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.qingci.app"
+    },
+    "experiments": {
+      "typedRoutes": true
     },
     "extra": {
       "eas": {
