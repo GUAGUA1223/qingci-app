@@ -1,122 +1,144 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
+  StyleSheet,
   SafeAreaView,
   ScrollView,
-  Image,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import { colors, fontSize, spacing } from '../../src/theme/colors';
-import { levels } from '../../src/data/preschoolWords';
-import { wordImages } from '../../src/assets/images';
+import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-interface MapScreenProps {
-  navigation: any;
-}
+const TOTAL_LEVELS = 8;
+const UNLOCKED_LEVELS = 3; // 模拟已通关数
 
-const levelConfig: { [key: string]: { bg: string[]; icon: string; emoji: string } } = {
-  'PRE_K_001': { bg: ['#FF6B6B', '#EE5A5A'], icon: '🐾', emoji: '🐱🐶🦁' },
-  'PRE_K_002': { bg: ['#FFE66D', '#F0D85C'], icon: '🍎', emoji: '🍎🍌🍇' },
-  'PRE_K_003': { bg: ['#A29BFE', '#9189ED'], icon: '🎨', emoji: '🎨🔢😊' },
-  'PRE_K_004': { bg: ['#74B9FF', '#5CA8F0'], icon: '👨‍👩‍👧', emoji: '👨‍👩‍👧‍👦' },
-  'PRE_K_005': { bg: ['#55EFC4', '#45DDB3'], icon: '🎈', emoji: '🚗✈️🚀' },
-};
+export default function PreschoolMap() {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  const [currentLevel] = useState(UNLOCKED_LEVELS + 1); // 当前关卡
 
-export default function LevelMap({ navigation }: MapScreenProps) {
-  const handleLevelSelect = (level: any) => {
-    navigation.navigate('Learn', {
-      levelId: level.id,
-      levelName: level.name,
-      words: level.words,
-    });
+  const getNodeStatus = (level: number) => {
+    if (level < currentLevel) return 'completed';
+    if (level === currentLevel) return 'current';
+    return 'locked';
   };
+
+  const handleNodePress = (level: number) => {
+    const status = getNodeStatus(level);
+    if (status === 'current') {
+      router.push('/preschool/learn');
+    }
+  };
+
+  const handleBack = () => {
+    router.push('/preschool');
+  };
+
+  // 路径节点排成3行
+  const levels1 = [1, 2, 3, 4];
+  const levels2 = [5, 6, 7, 8];
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={['#FFF9F0', '#FFF5E6']}
-        style={styles.header}
-      >
-        <Text style={styles.title}>🗺️ 关卡地图</Text>
-        <Text style={styles.subtitle}>选择关卡开始学习</Text>
-      </LinearGradient>
+      <View style={[styles.safeAreaTop, { height: insets.top }]} />
 
-      <ScrollView 
-        style={styles.content} 
-        contentContainerStyle={styles.contentContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.mapContainer}>
-          {/* 路径线 */}
-          <View style={styles.pathLine} />
-          
-          {/* 关卡节点 */}
-          {levels.map((level, index) => {
-            const config = levelConfig[level.id];
-            const isFirst = index === 0;
-            const isLast = index === levels.length - 1;
-            
+      {/* 顶部 */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backBtn}
+          onPress={handleBack}
+          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+        >
+          <Text style={styles.backEmoji}>👈</Text>
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>闯关地图</Text>
+        <View style={{ width: 40 }} />
+      </View>
+
+      <ScrollView contentContainerStyle={styles.mapContent}>
+        {/* 第一排 */}
+        <View style={styles.levelRow}>
+          {levels1.map((level) => {
+            const status = getNodeStatus(level);
             return (
               <TouchableOpacity
-                key={level.id}
+                key={level}
                 style={[
-                  styles.levelNode,
-                  { zIndex: levels.length - index }
+                  styles.node,
+                  status === 'completed' && styles.nodeCompleted,
+                  status === 'current' && styles.nodeCurrent,
+                  status === 'locked' && styles.nodeLocked,
                 ]}
-                onPress={() => handleLevelSelect(level)}
-                activeOpacity={0.8}
+                onPress={() => handleNodePress(level)}
+                activeOpacity={status === 'current' ? 0.7 : 1}
               >
-                <View style={styles.nodeContent}>
-                  {/* 关卡气泡 */}
-                  <LinearGradient
-                    colors={config.bg}
-                    style={[
-                      styles.levelBubble,
-                      isFirst && styles.firstBubble,
-                      isLast && styles.lastBubble,
-                    ]}
-                  >
-                    <Text style={styles.levelIcon}>{config.icon}</Text>
-                    <Text style={styles.levelName}>{level.name}</Text>
-                    <Text style={styles.levelWords}>
-                      {level.words.length}个单词
-                    </Text>
-                  </LinearGradient>
-                  
-                  {/* 预览图片 */}
-                  <View style={styles.previewImages}>
-                    {level.words.slice(0, 3).map((word, i) => {
-                      const img = wordImages[word.word.toLowerCase()];
-                      return (
-                        <View key={word.id} style={styles.previewItem}>
-                          {img ? (
-                            <Image source={img} style={styles.previewImg} />
-                          ) : (
-                            <View style={styles.previewPlaceholder}>
-                              <Text style={styles.previewText}>
-                                {word.word[0]}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      );
-                    })}
-                  </View>
-                </View>
-                
-                {/* 连接箭头 */}
-                {index < levels.length - 1 && (
-                  <View style={styles.arrow}>
-                    <Text style={styles.arrowText}>↓</Text>
-                  </View>
-                )}
+                {status === 'completed' && <Text style={styles.nodeStar}>⭐</Text>}
+                {status === 'locked' && <Text style={styles.nodeLock}>🔒</Text>}
+                {status === 'current' && <Text style={styles.nodeFox}>🦊</Text>}
+                <Text style={[
+                  styles.nodeNumber,
+                  status === 'locked' && styles.nodeNumberLocked,
+                ]}>
+                  {level}
+                </Text>
               </TouchableOpacity>
             );
           })}
         </View>
+
+        {/* 连接线 */}
+        <View style={styles.connectorRow}>
+          <View style={styles.connectorLine} />
+          <View style={styles.connectorLine} />
+          <View style={styles.connectorLine} />
+          <View style={styles.connectorLine} />
+        </View>
+
+        {/* 第二排 */}
+        <View style={styles.levelRow}>
+          {levels2.map((level) => {
+            const status = getNodeStatus(level);
+            return (
+              <TouchableOpacity
+                key={level}
+                style={[
+                  styles.node,
+                  status === 'completed' && styles.nodeCompleted,
+                  status === 'current' && styles.nodeCurrent,
+                  status === 'locked' && styles.nodeLocked,
+                ]}
+                onPress={() => handleNodePress(level)}
+                activeOpacity={status === 'current' ? 0.7 : 1}
+              >
+                {status === 'completed' && <Text style={styles.nodeStar}>⭐</Text>}
+                {status === 'locked' && <Text style={styles.nodeLock}>🔒</Text>}
+                {status === 'current' && <Text style={styles.nodeFox}>🦊</Text>}
+                <Text style={[
+                  styles.nodeNumber,
+                  status === 'locked' && styles.nodeNumberLocked,
+                ]}>
+                  {level}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+
+        {/* 总进度 */}
+        <View style={styles.progressInfo}>
+          <Text style={styles.progressEmoji}>🏆</Text>
+          <Text style={styles.progressLabel}>
+            已通关 {UNLOCKED_LEVELS}/{TOTAL_LEVELS} 关
+          </Text>
+        </View>
+
+        {/* 提示 */}
+        {currentLevel <= TOTAL_LEVELS && (
+          <View style={styles.hintCard}>
+            <Text style={styles.hintText}>点击 🦊 进入第 {currentLevel} 关</Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -125,132 +147,127 @@ export default function LevelMap({ navigation }: MapScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#E8FFF9',
+  },
+  safeAreaTop: {
+    backgroundColor: '#E8FFF9',
   },
   header: {
-    paddingHorizontal: spacing.lg,
-    paddingTop: spacing.xl,
-    paddingBottom: spacing.lg,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    backgroundColor: '#4ECDC4',
   },
-  title: {
-    fontSize: fontSize.xxl,
+  backBtn: {
+    padding: 4,
+    width: 40,
+  },
+  backEmoji: {
+    fontSize: 26,
+  },
+  headerTitle: {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: colors.text,
-    textAlign: 'center',
+    color: '#FFFFFF',
   },
-  subtitle: {
-    fontSize: fontSize.md,
-    color: colors.textLight,
-    textAlign: 'center',
-    marginTop: spacing.xs,
-  },
-  content: {
-    flex: 1,
-  },
-  contentContainer: {
-    paddingHorizontal: spacing.lg,
-    paddingBottom: spacing.xl,
-  },
-  mapContainer: {
-    position: 'relative',
-    paddingTop: spacing.md,
-  },
-  pathLine: {
-    position: 'absolute',
-    left: '50%',
-    top: 80,
-    width: 4,
-    height: '85%',
-    backgroundColor: '#DDD',
-    borderRadius: 2,
-    marginLeft: -2,
-  },
-  levelNode: {
-    alignItems: 'center',
-    marginBottom: spacing.xl,
-  },
-  nodeContent: {
+  mapContent: {
+    paddingVertical: 40,
+    paddingHorizontal: 20,
     alignItems: 'center',
   },
-  levelBubble: {
-    width: 200,
-    paddingVertical: spacing.lg,
-    paddingHorizontal: spacing.md,
-    borderRadius: 20,
+  levelRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginBottom: 10,
+  },
+  connectorRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '80%',
+    marginBottom: 20,
+    marginLeft: '10%',
+  },
+  connectorLine: {
+    width: 2,
+    height: 20,
+    backgroundColor: '#4ECDC4',
+    opacity: 0.4,
+  },
+  node: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.15,
-    shadowRadius: 6,
+    shadowRadius: 4,
+    elevation: 4,
   },
-  firstBubble: {
-    borderWidth: 4,
-    borderColor: '#FFD700',
+  nodeCompleted: {
+    backgroundColor: '#4ECDC4',
   },
-  lastBubble: {
-    borderWidth: 4,
-    borderColor: '#FF6B6B',
-  },
-  levelIcon: {
-    fontSize: 36,
-    marginBottom: spacing.xs,
-  },
-  levelName: {
-    fontSize: fontSize.lg,
-    fontWeight: 'bold',
-    color: colors.textWhite,
-  },
-  levelWords: {
-    fontSize: fontSize.sm,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: spacing.xs,
-  },
-  previewImages: {
-    flexDirection: 'row',
-    marginTop: spacing.md,
-    gap: spacing.sm,
-  },
-  previewItem: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    overflow: 'hidden',
+  nodeCurrent: {
+    backgroundColor: '#FFD93D',
     borderWidth: 3,
-    borderColor: '#FFF',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
+    borderColor: '#FF9ECD',
   },
-  previewImg: {
-    width: '100%',
-    height: '100%',
+  nodeLocked: {
+    backgroundColor: '#E0E0E0',
   },
-  previewPlaceholder: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+  nodeStar: {
+    fontSize: 22,
+    position: 'absolute',
+    top: -8,
+    right: -4,
   },
-  previewText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: colors.textWhite,
+  nodeLock: {
+    fontSize: 24,
   },
-  arrow: {
-    marginTop: spacing.md,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: '#DDD',
-    alignItems: 'center',
-    justifyContent: 'center',
+  nodeFox: {
+    fontSize: 28,
   },
-  arrowText: {
+  nodeNumber: {
     fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    marginTop: 2,
+  },
+  nodeNumberLocked: {
     color: '#999',
+  },
+  progressInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 40,
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 20,
+  },
+  progressEmoji: {
+    fontSize: 20,
+  },
+  progressLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#4ECDC4',
+  },
+  hintCard: {
+    marginTop: 20,
+    backgroundColor: '#FFF5F8',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 16,
+  },
+  hintText: {
+    fontSize: 16,
+    color: '#FF9ECD',
+    fontWeight: '600',
   },
 });
