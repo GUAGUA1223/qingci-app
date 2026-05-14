@@ -4,7 +4,6 @@
     "slug": "qingci-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "scheme": "qingci-app",
     "userInterfaceStyle": "light",
     "splash": {
       "resizeMode": "contain",
