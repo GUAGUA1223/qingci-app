@@ -1,0 +1,66 @@
+import { Textbook } from '../../../types/vocabulary';
+
+// 人教新目标七年级下册
+export const pep7b: Textbook = {
+  id: 'pep-middle-7b',
+  name: '人教新目标七年级下册',
+  publisher: '人教新目标',
+  stage: 'middle',
+  grade: 7,
+  semester: 'second',
+  units: [
+    { id: 'unit1', name: 'Unit 1 Can you play the guitar?', words: [
+      { id: 'pep7b-u1-w1', word: 'can', phonetic: '/kæn/', meaning: '能', sentence: 'I can swim.', memoryTip: 'can=能/会', image: '💪', difficulty: 1, partOfSpeech: '助动词' },
+      { id: 'pep7b-u1-w2', word: 'play', phonetic: '/pleɪ/', meaning: '玩', sentence: 'I can play the guitar.', memoryTip: 'play=玩/弹奏', image: '🎸', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u1-w3', word: 'guitar', phonetic: '/ɡɪˈtɑːr/', meaning: '吉他', sentence: 'She can play the guitar.', memoryTip: 'guitar=吉他', image: '🎸', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u1-w4', word: 'sing', phonetic: '/sɪŋ/', meaning: '唱歌', sentence: 'I can sing.', memoryTip: 'sing=唱歌', image: '🎤', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u1-w5', word: 'dance', phonetic: '/dæns/', meaning: '跳舞', sentence: 'She can dance.', memoryTip: 'dance=跳舞', image: '💃', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u1-w6', word: 'draw', phonetic: '/drɔː/', meaning: '画画', sentence: 'I can draw.', memoryTip: 'draw=画画', image: '🎨', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u1-w7', word: 'swim', phonetic: '/swɪm/', meaning: '游泳', sentence: 'He can swim.', memoryTip: 'swim=游泳', image: '🏊', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u1-w8', word: 'piano', phonetic: '/piˈænoʊ/', meaning: '钢琴', sentence: 'She plays the piano.', memoryTip: 'piano=钢琴', image: '🎹', difficulty: 1, partOfSpeech: '名词' },
+    ]},
+    { id: 'unit2', name: 'Unit 2 What time do you go to school?', words: [
+      { id: 'pep7b-u2-w1', word: 'time', phonetic: '/taɪm/', meaning: '时间', sentence: 'What time is it?', memoryTip: 'time=时间', image: '⏰', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u2-w2', word: 'up', phonetic: '/ʌp/', meaning: '向上', sentence: 'I get up at 6.', memoryTip: 'up=起床/向上', image: '🌅', difficulty: 1, partOfSpeech: '副词' },
+      { id: 'pep7b-u2-w3', word: 'run', phonetic: '/rʌn/', meaning: '跑', sentence: 'I run every morning.', memoryTip: 'run=跑', image: '🏃', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u2-w4', word: 'work', phonetic: '/wɜːrk/', meaning: '工作', sentence: 'I work at 8.', memoryTip: 'work=工作', image: '💼', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u2-w5', word: 'hour', phonetic: '/ˈaʊər/', meaning: '小时', sentence: 'An hour has 60 minutes.', memoryTip: 'hour=小时', image: '⏱️', difficulty: 2, partOfSpeech: '名词' },
+      { id: 'pep7b-u2-w6', word: 'late', phonetic: '/leɪt/', meaning: '迟的', sentence: 'I am late for school.', memoryTip: 'late=迟到', image: '⏰', difficulty: 2, partOfSpeech: '形容词' },
+      { id: 'pep7b-u2-w7', word: 'home', phonetic: '/hoʊm/', meaning: '家', sentence: 'I go home at 5.', memoryTip: 'home=家', image: '🏠', difficulty: 1, partOfSpeech: '名词' },
+    ]},
+    { id: 'unit3', name: 'Unit 3 How do you get to school?', words: [
+      { id: 'pep7b-u3-w1', word: 'get', phonetic: '/ɡet/', meaning: '到达', sentence: 'How do you get to school?', memoryTip: 'get=到达', image: '🚶', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u3-w2', word: 'bus', phonetic: '/bʌs/', meaning: '公共汽车', sentence: 'I take the bus to school.', memoryTip: 'bus=公交车', image: '🚌', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u3-w3', word: 'subway', phonetic: '/ˈsʌbweɪ/', meaning: '地铁', sentence: 'I take the subway.', memoryTip: 'sub+way=地铁', image: '🚇', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u3-w4', word: 'walk', phonetic: '/wɔːk/', meaning: '走', sentence: 'I walk to school.', memoryTip: 'walk=走路', image: '🚶', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u3-w5', word: 'ride', phonetic: '/raɪd/', meaning: '骑', sentence: 'I ride my bike.', memoryTip: 'ride=骑', image: '🚲', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u3-w6', word: 'minute', phonetic: '/ˈmɪnɪt/', meaning: '分钟', sentence: 'It takes 10 minutes.', memoryTip: 'minute=分钟', image: '⏱️', difficulty: 2, partOfSpeech: '名词' },
+      { id: 'pep7b-u3-w7', word: 'far', phonetic: '/fɑːr/', meaning: '远', sentence: 'My school is far.', memoryTip: 'far=远', image: '📍', difficulty: 1, partOfSpeech: '形容词' },
+    ]},
+    { id: 'unit4', name: 'Unit 4 Don\'t eat in class', words: [
+      { id: 'pep7b-u4-w1', word: 'rule', phonetic: '/ruːl/', meaning: '规则', sentence: 'We have rules at school.', memoryTip: 'rule=规则', image: '📋', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u4-w2', word: 'class', phonetic: '/klæs/', meaning: '课', sentence: 'Do not talk in class.', memoryTip: 'class=课/班级', image: '📚', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u4-w3', word: 'listen', phonetic: '/ˈlɪsn/', meaning: '听', sentence: 'Listen in class.', memoryTip: 'listen=听', image: '👂', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u4-w4', word: 'fight', phonetic: '/faɪt/', meaning: '打架', sentence: 'Do not fight.', memoryTip: 'fight=打架', image: '👊', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u4-w5', word: 'sorry', phonetic: '/ˈsɒri/', meaning: '对不起', sentence: 'I am sorry.', memoryTip: 'sorry=抱歉', image: '😔', difficulty: 1, partOfSpeech: '形容词' },
+      { id: 'pep7b-u4-w6', word: 'outside', phonetic: '/ˌaʊtˈsaɪd/', meaning: '在外面', sentence: 'Do not go outside.', memoryTip: 'out+side=外面', image: '🌳', difficulty: 1, partOfSpeech: '副词' },
+      { id: 'pep7b-u4-w7', word: 'wear', phonetic: '/wer/', meaning: '穿', sentence: 'Do not wear hats.', memoryTip: 'wear=穿/戴', image: '👒', difficulty: 1, partOfSpeech: '动词' },
+    ]},
+    { id: 'unit5', name: 'Unit 5 What do you have for lunch?', words: [
+      { id: 'pep7b-u5-w1', word: 'lunch', phonetic: '/lʌntʃ/', meaning: '午餐', sentence: 'What do you have for lunch?', memoryTip: 'lunch=午餐', image: '🍱', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u5-w2', word: 'hamburger', phonetic: '/ˈhæmbɜːrɡər/', meaning: '汉堡包', sentence: 'I eat a hamburger.', memoryTip: 'hamburger=汉堡', image: '🍔', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u5-w3', word: 'tomato', phonetic: '/təˈmeɪtoʊ/', meaning: '西红柿', sentence: 'Tomatoes are red.', memoryTip: 'tomato=番茄', image: '🍅', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u5-w4', word: 'potato', phonetic: '/pəˈteɪtoʊ/', meaning: '土豆', sentence: 'I like potatoes.', memoryTip: 'potato=土豆', image: '🥔', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u5-w5', word: 'milk', phonetic: '/mɪlk/', meaning: '牛奶', sentence: 'I drink milk.', memoryTip: 'milk=牛奶', image: '🥛', difficulty: 1, partOfSpeech: '名词' },
+      { id: 'pep7b-u5-w6', word: 'careful', phonetic: '/ˈkerfl/', meaning: '小心的', sentence: 'Be careful.', memoryTip: 'care+ful', image: '⚠️', difficulty: 2, partOfSpeech: '形容词' },
+    ]},
+    { id: 'unit6', name: 'Unit 6 I\'m watching TV', words: [
+      { id: 'pep7b-u6-w1', word: 'watch', phonetic: '/wɒtʃ/', meaning: '看', sentence: 'I am watching TV.', memoryTip: 'watch=观看', image: '📺', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u6-w2', word: 'wash', phonetic: '/wɒʃ/', meaning: '洗', sentence: 'I am washing my clothes.', memoryTip: 'wash=洗', image: '👕', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u6-w3', word: 'clean', phonetic: '/kliːn/', meaning: '打扫', sentence: 'I am cleaning my room.', memoryTip: 'clean=清洁', image: '🧹', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u6-w4', word: 'eat', phonetic: '/iːt/', meaning: '吃', sentence: 'I am eating dinner.', memoryTip: 'eat=吃', image: '🍽️', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u6-w5', word: 'drink', phonetic: '/drɪŋk/', meaning: '喝', sentence: 'I am drinking water.', memoryTip: 'drink=喝', image: '🥤', difficulty: 1, partOfSpeech: '动词' },
+      { id: 'pep7b-u6-w6', word: 'sleep', phonetic: '/sliːp/', meaning: '睡觉', sentence: 'He is sleeping.', memoryTip: 'sleep=睡觉', image: '😴', difficulty: 1, partOfSpeech: '动词' },
+    ]},
+  ],
+};

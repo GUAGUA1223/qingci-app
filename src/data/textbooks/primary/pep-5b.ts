@@ -1,0 +1,97 @@
+import { Textbook } from '../../../types/vocabulary';
+
+// 人教PEP五年级下册
+export const pep5b: Textbook = {
+  id: 'pep-primary-5b',
+  name: '人教PEP版五年级下册',
+  publisher: '人教PEP',
+  stage: 'primary',
+  grade: 5,
+  semester: 'second',
+  units: [
+    {
+      id: 'unit1',
+      name: 'Unit 1 My day',
+      words: [
+        { id: 'pep5b-u1-w1', word: 'eat breakfast', phonetic: '/iːt ˈbrekfəst/', meaning: '吃早餐', sentence: 'I eat breakfast at 7 o clock.', memoryTip: 'eat(吃)+breakfast(早餐)', image: '🍳', difficulty: 1, partOfSpeech: '动词短语' },
+        { id: 'pep5b-u1-w2', word: 'play sports', phonetic: '/pleɪ spɔːrts/', meaning: '进行体育运动', sentence: 'I play sports every day.', memoryTip: 'play(做)+sports(运动)', image: '⚽', difficulty: 1, partOfSpeech: '动词短语' },
+        { id: 'pep5b-u1-w3', word: 'morning', phonetic: '/ˈmɔːrnɪŋ/', meaning: '早晨', sentence: 'Good morning!', memoryTip: 'morning=早晨', image: '🌅', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u1-w4', word: 'class', phonetic: '/klæs/', meaning: '课', sentence: 'We have four classes today.', memoryTip: 'class=课', image: '📚', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u1-w5', word: 'exercise', phonetic: '/ˈeksərsaɪz/', meaning: '做运动', sentence: 'I exercise every morning.', memoryTip: 'exercise=锻炼', image: '🏃', difficulty: 2, partOfSpeech: '动词' },
+        { id: 'pep5b-u1-w6', word: 'start', phonetic: '/stɑːrt/', meaning: '开始', sentence: 'School starts at 8 o clock.', memoryTip: 'start=开始', image: '🕗', difficulty: 2, partOfSpeech: '动词' },
+        { id: 'pep5b-u1-w7', word: 'usually', phonetic: '/ˈjuːʒuəli/', meaning: '通常地', sentence: 'I usually get up at 6.', memoryTip: 'usual+ly=通常', image: '⏰', difficulty: 2, partOfSpeech: '副词' },
+        { id: 'pep5b-u1-w8', word: 'late', phonetic: '/leɪt/', meaning: '迟到的', sentence: 'I am late for school.', memoryTip: 'late=迟的', image: '⏰', difficulty: 2, partOfSpeech: '形容词' },
+      ],
+    },
+    {
+      id: 'unit2',
+      name: 'Unit 2 My favourite season',
+      words: [
+        { id: 'pep5b-u2-w1', word: 'spring', phonetic: '/sprɪŋ/', meaning: '春天', sentence: 'Spring is warm.', memoryTip: 'spring=春天', image: '🌸', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u2-w2', word: 'summer', phonetic: '/ˈsʌmər/', meaning: '夏天', sentence: 'Summer is hot.', memoryTip: 'summer=夏天', image: '☀️', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u2-w3', word: 'autumn', phonetic: '/ˈɔːtəm/', meaning: '秋天', sentence: 'Autumn is cool.', memoryTip: 'autumn=秋天', image: '🍂', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u2-w4', word: 'winter', phonetic: '/ˈwɪntər/', meaning: '冬天', sentence: 'Winter is cold.', memoryTip: 'winter=冬天', image: '❄️', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u2-w5', word: 'season', phonetic: '/ˈsiːzən/', meaning: '季节', sentence: 'There are four seasons.', memoryTip: 'season=季节', image: '📅', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u2-w6', word: 'sunny', phonetic: '/ˈsʌni/', meaning: '阳光充足的', sentence: 'It is sunny today.', memoryTip: 'sun+ny=阳光的', image: '☀️', difficulty: 2, partOfSpeech: '形容词' },
+        { id: 'pep5b-u2-w7', word: 'windy', phonetic: '/ˈwɪndi/', meaning: '有风的', sentence: 'It is windy today.', memoryTip: 'wind+y=有风的', image: '🌬️', difficulty: 2, partOfSpeech: '形容词' },
+        { id: 'pep5b-u2-w8', word: 'cloudy', phonetic: '/ˈklaʊdi/', meaning: '多云的', sentence: 'It is cloudy today.', memoryTip: 'cloud+y=多云的', image: '☁️', difficulty: 2, partOfSpeech: '形容词' },
+      ],
+    },
+    {
+      id: 'unit3',
+      name: 'Unit 3 My school calendar',
+      words: [
+        { id: 'pep5b-u3-w1', word: 'January', phonetic: '/ˈdʒænjuəri/', meaning: '一月', sentence: 'New Year is in January.', memoryTip: 'January=一月', image: '📅', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u3-w2', word: 'February', phonetic: '/ˈfebruəri/', meaning: '二月', sentence: 'Spring Festival is in February.', memoryTip: 'February=二月', image: '🧧', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u3-w3', word: 'March', phonetic: '/mɑːrtʃ/', meaning: '三月', sentence: 'March is spring.', memoryTip: 'March=三月', image: '📅', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u3-w4', word: 'April', phonetic: '/ˈeɪprəl/', meaning: '四月', sentence: 'April Fools Day is April 1st.', memoryTip: 'April=四月', image: '📅', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u3-w5', word: 'May', phonetic: '/meɪ/', meaning: '五月', sentence: 'May 1st is Labour Day.', memoryTip: 'May=五月', image: '📅', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u3-w6', word: 'June', phonetic: '/dʒuːn/', meaning: '六月', sentence: 'Children is Day June 1st.', memoryTip: 'June=六月', image: '🎈', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u3-w7', word: 'July', phonetic: '/dʒuˈlaɪ/', meaning: '七月', sentence: 'July is hot.', memoryTip: 'July=七月', image: '☀️', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u3-w8', word: 'August', phonetic: '/ˈɔːɡəst/', meaning: '八月', sentence: 'August is summer vacation.', memoryTip: 'August=八月', image: '🏖️', difficulty: 1, partOfSpeech: '名词' },
+      ],
+    },
+    {
+      id: 'unit4',
+      name: 'Unit 4 When is Easter?',
+      words: [
+        { id: 'pep5b-u4-w1', word: 'thing', phonetic: '/θɪŋ/', meaning: '东西', sentence: 'I have many things.', memoryTip: 'thing=东西', image: '📦', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u4-w2', word: 'contest', phonetic: '/ˈkɒntest/', meaning: '比赛', sentence: 'We will have a contest.', memoryTip: 'contest=比赛', image: '🏆', difficulty: 2, partOfSpeech: '名词' },
+        { id: 'pep5b-u4-w3', word: 'festival', phonetic: '/ˈfestɪvl/', meaning: '节日', sentence: 'Spring Festival is in January.', memoryTip: 'festival=节日', image: '🎊', difficulty: 2, partOfSpeech: '名词' },
+        { id: 'pep5b-u4-w4', word: 'holiday', phonetic: '/ˈhɒlədeɪ/', meaning: '假期', sentence: 'We have a holiday.', memoryTip: 'holiday=假期', image: '🏖️', difficulty: 2, partOfSpeech: '名词' },
+        { id: 'pep5b-u4-w5', word: 'trip', phonetic: '/trɪp/', meaning: '旅行', sentence: 'We will go on a trip.', memoryTip: 'trip=旅行', image: '✈️', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u4-w6', word: 'first', phonetic: '/fɜːrst/', meaning: '第一', sentence: 'January is the first month.', memoryTip: 'first=第一', image: '1️⃣', difficulty: 1, partOfSpeech: '数词' },
+        { id: 'pep5b-u4-w7', word: 'second', phonetic: '/ˈsekənd/', meaning: '第二', sentence: 'February is the second month.', memoryTip: 'second=第二', image: '2️⃣', difficulty: 1, partOfSpeech: '数词' },
+        { id: 'pep5b-u4-w8', word: 'third', phonetic: '/θɜːrd/', meaning: '第三', sentence: 'March is the third month.', memoryTip: 'third=第三', image: '3️⃣', difficulty: 2, partOfSpeech: '数词' },
+      ],
+    },
+    {
+      id: 'unit5',
+      name: 'Unit 5 Whose dog is it?',
+      words: [
+        { id: 'pep5b-u5-w1', word: 'mine', phonetic: '/maɪn/', meaning: '我的', sentence: 'This book is mine.', memoryTip: 'mine=我的', image: '📕', difficulty: 2, partOfSpeech: '代词' },
+        { id: 'pep5b-u5-w2', word: 'yours', phonetic: '/jɔːrz/', meaning: '你的', sentence: 'Is this yours?', memoryTip: 'your+s=你的', image: '📗', difficulty: 2, partOfSpeech: '代词' },
+        { id: 'pep5b-u5-w3', word: 'his', phonetic: '/hɪz/', meaning: '他的', sentence: 'This is his book.', memoryTip: 'his=他的', image: '📘', difficulty: 1, partOfSpeech: '代词' },
+        { id: 'pep5b-u5-w4', word: 'hers', phonetic: '/hɜːrz/', meaning: '她的', sentence: 'This bag is hers.', memoryTip: 'her+s=她的', image: '📙', difficulty: 2, partOfSpeech: '代词' },
+        { id: 'pep5b-u5-w5', word: 'theirs', phonetic: '/ðerz/', meaning: '他们的', sentence: 'This house is theirs.', memoryTip: 'their+s=他们的', image: '🏠', difficulty: 2, partOfSpeech: '代词' },
+        { id: 'pep5b-u5-w6', word: 'ours', phonetic: '/aʊərz/', meaning: '我们的', sentence: 'This is our classroom, and it is ours.', memoryTip: 'our+s=我们的', image: '🏫', difficulty: 2, partOfSpeech: '代词' },
+        { id: 'pep5b-u5-w7', word: 'climb', phonetic: '/klaɪm/', meaning: '爬', sentence: 'The cat climbs the tree.', memoryTip: 'climb=爬', image: '🐱', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep5b-u5-w8', word: 'sleep', phonetic: '/sliːp/', meaning: '睡觉', sentence: 'The baby is sleeping.', memoryTip: 'sleep=睡觉', image: '😴', difficulty: 1, partOfSpeech: '动词' },
+      ],
+    },
+    {
+      id: 'unit6',
+      name: 'Unit 6 Work quietly!',
+      words: [
+        { id: 'pep5b-u6-w1', word: 'drink', phonetic: '/drɪŋk/', meaning: '喝', sentence: 'I want to drink water.', memoryTip: 'drink=喝', image: '🥤', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep5b-u6-w2', word: 'talk', phonetic: '/tɔːk/', meaning: '说话', sentence: 'Please talk quietly.', memoryTip: 'talk=说话', image: '💬', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep5b-u6-w3', word: 'shoes', phonetic: '/ʃuːz/', meaning: '鞋子', sentence: 'Where are my shoes?', memoryTip: 'shoe+s=鞋子', image: '👟', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep5b-u6-w4', word: 'off', phonetic: '/ɒf/', meaning: '落下', sentence: 'Take off your shoes.', memoryTip: 'off=离开', image: '👟', difficulty: 1, partOfSpeech: '副词' },
+        { id: 'pep5b-u6-w5', word: 'quietly', phonetic: '/ˈkwaɪətli/', meaning: '安静地', sentence: 'Please speak quietly.', memoryTip: 'quiet+ly=安静地', image: '🤫', difficulty: 2, partOfSpeech: '副词' },
+        { id: 'pep5b-u6-w6', word: 'jump', phonetic: '/dʒʌmp/', meaning: '跳', sentence: 'The frog can jump.', memoryTip: 'jump=跳', image: '🐸', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep5b-u6-w7', word: 'any', phonetic: '/ˈeni/', meaning: '任何一个', sentence: 'Do you have any questions?', memoryTip: 'any=任何一个', image: '❓', difficulty: 2, partOfSpeech: '代词' },
+        { id: 'pep5b-u6-w8', word: 'different', phonetic: '/ˈdɪfərənt/', meaning: '不同的', sentence: 'We are different.', memoryTip: 'different=不同的', image: '⚡', difficulty: 2, partOfSpeech: '形容词' },
+      ],
+    },
+  ],
+};

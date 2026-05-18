@@ -1,0 +1,97 @@
+import { Textbook } from '../../../types/vocabulary';
+
+// 人教PEP六年级下册（小升初毕业册）
+export const pep6b: Textbook = {
+  id: 'pep-primary-6b',
+  name: '人教PEP版六年级下册',
+  publisher: '人教PEP',
+  stage: 'primary',
+  grade: 6,
+  semester: 'second',
+  units: [
+    {
+      id: 'unit1',
+      name: 'Unit 1 How tall are you?',
+      words: [
+        { id: 'pep6b-u1-w1', word: 'taller', phonetic: '/ˈtælər/', meaning: '更高的', sentence: 'I am taller than you.', memoryTip: 'tall+er=更高的', image: '📏', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w2', word: 'shorter', phonetic: '/ˈʃɔːrtər/', meaning: '更矮的', sentence: 'He is shorter than me.', memoryTip: 'short+er=更矮的', image: '📏', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w3', word: 'stronger', phonetic: '/ˈstrɒŋɡər/', meaning: '更强壮的', sentence: 'He is stronger than me.', memoryTip: 'strong+er=更强壮的', image: '💪', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w4', word: 'older', phonetic: '/ˈoʊldər/', meaning: '更年长的', sentence: 'She is older than me.', memoryTip: 'old+er=更老的', image: '👴', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w5', word: 'younger', phonetic: '/ˈjʌŋɡər/', meaning: '更年轻的', sentence: 'He is younger than me.', memoryTip: 'young+er=更年轻的', image: '👶', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w6', word: 'bigger', phonetic: '/ˈbɪɡər/', meaning: '更大的', sentence: 'The elephant is bigger.', memoryTip: 'big+ger=更大的', image: '🐘', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w7', word: 'smaller', phonetic: '/ˈsmɔːlər/', meaning: '更小的', sentence: 'The mouse is smaller.', memoryTip: 'small+er=更小的', image: '🐭', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w8', word: 'thinner', phonetic: '/ˈθɪnər/', meaning: '更瘦的', sentence: 'He is thinner than before.', memoryTip: 'thin+ner=更瘦的', image: '🏃', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w9', word: 'heavier', phonetic: '/ˈheviər/', meaning: '更重的', sentence: 'The box is heavier.', memoryTip: 'heavy+er=更重的', image: '📦', difficulty: 2, partOfSpeech: '形容词' },
+        { id: 'pep6b-u1-w10', word: 'cm', phonetic: '/siː em/', meaning: '厘米', sentence: 'I am 150 cm tall.', memoryTip: 'cm=centimeter厘米', image: '📏', difficulty: 1, partOfSpeech: '名词' },
+      ],
+    },
+    {
+      id: 'unit2',
+      name: 'Unit 2 Last weekend',
+      words: [
+        { id: 'pep6b-u2-w1', word: 'watched', phonetic: '/wɒtʃt/', meaning: '看了', sentence: 'I watched TV last weekend.', memoryTip: 'watch的过去式', image: '📺', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u2-w2', word: 'cleaned', phonetic: '/kliːnd/', meaning: '打扫了', sentence: 'I cleaned my room.', memoryTip: 'clean的过去式', image: '🧹', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u2-w3', word: 'played', phonetic: '/pleɪd/', meaning: '玩了', sentence: 'I played football.', memoryTip: 'play的过去式', image: '⚽', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u2-w4', word: 'visited', phonetic: '/ˈvɪzɪtɪd/', meaning: '拜访了', sentence: 'I visited grandparents.', memoryTip: 'visit的过去式', image: '👴👵', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u2-w5', word: 'had', phonetic: '/hæd/', meaning: '度过', sentence: 'I had a cold last weekend.', memoryTip: 'have的过去式', image: '🤒', difficulty: 2, partOfSpeech: '动词' },
+        { id: 'pep6b-u2-w6', word: 'last', phonetic: '/læst/', meaning: '上一个的', sentence: 'I was busy last weekend.', memoryTip: 'last=上一个', image: '📅', difficulty: 1, partOfSpeech: '形容词' },
+        { id: 'pep6b-u2-w7', word: 'yesterday', phonetic: '/ˈjestərdeɪ/', meaning: '昨天', sentence: 'I went to school yesterday.', memoryTip: 'yesterday=昨天', image: '📅', difficulty: 1, partOfSpeech: '副词' },
+        { id: 'pep6b-u2-w8', word: 'weekend', phonetic: '/ˈwiːkend/', meaning: '周末', sentence: 'What did you do last weekend?', memoryTip: 'week+end=周末', image: '🎉', difficulty: 1, partOfSpeech: '名词' },
+      ],
+    },
+    {
+      id: 'unit3',
+      name: 'Unit 3 Where did you go?',
+      words: [
+        { id: 'pep6b-u3-w1', word: 'went', phonetic: '/went/', meaning: '去', sentence: 'I went to the park.', memoryTip: 'go的过去式', image: '🏞️', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u3-w2', word: 'camp', phonetic: '/kæmp/', meaning: '野营', sentence: 'We went camping.', memoryTip: 'camp=露营', image: '⛺', difficulty: 2, partOfSpeech: '动词' },
+        { id: 'pep6b-u3-w3', word: 'lake', phonetic: '/leɪk/', meaning: '湖', sentence: 'We went to the lake.', memoryTip: 'lake=湖', image: '🏞️', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep6b-u3-w4', word: 'swam', phonetic: '/swæm/', meaning: '游泳', sentence: 'I swam in the sea.', memoryTip: 'swim的过去式', image: '🏊', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u3-w5', word: 'gift', phonetic: '/ɡɪft/', meaning: '礼物', sentence: 'I bought some gifts.', memoryTip: 'gift=礼物', image: '🎁', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep6b-u3-w6', word: 'took', phonetic: '/tʊk/', meaning: '拍照', sentence: 'I took many photos.', memoryTip: 'take的过去式', image: '📷', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u3-w7', word: 'ate', phonetic: '/eɪt/', meaning: '吃', sentence: 'I ate good food.', memoryTip: 'eat的过去式', image: '🍔', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u3-w8', word: 'ride', phonetic: '/raɪd/', meaning: '骑', sentence: 'I rode a horse.', memoryTip: 'ride=骑', image: '🐎', difficulty: 1, partOfSpeech: '动词' },
+      ],
+    },
+    {
+      id: 'unit4',
+      name: 'Unit 4 Then and now',
+      words: [
+        { id: 'pep6b-u4-w1', word: 'dream', phonetic: '/driːm/', meaning: '梦想', sentence: 'I have a dream.', memoryTip: 'dream=梦想', image: '💭', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep6b-u4-w2', word: 'different', phonetic: '/ˈdɪfərənt/', meaning: '不同的', sentence: 'Things are different now.', memoryTip: 'different=不同的', image: '⚡', difficulty: 2, partOfSpeech: '形容词' },
+        { id: 'pep6b-u4-w3', word: 'active', phonetic: '/ˈæktɪv/', meaning: '活跃的', sentence: 'She is active in class.', memoryTip: 'active=活跃的', image: '🏃', difficulty: 2, partOfSpeech: '形容词' },
+        { id: 'pep6b-u4-w4', word: 'interesting', phonetic: '/ˈɪntrəstɪŋ/', meaning: '有趣的', sentence: 'The story is interesting.', memoryTip: 'interest+ing=有趣的', image: '📚', difficulty: 2, partOfSpeech: '形容词' },
+        { id: 'pep6b-u4-w5', word: 'before', phonetic: '/bɪˈfɔːr/', meaning: '以前', sentence: 'I did not like English before.', memoryTip: 'before=以前', image: '⏪', difficulty: 2, partOfSpeech: '副词' },
+        { id: 'pep6b-u4-w6', word: 'grasshopper', phonetic: '/ˈɡræshɒpər/', meaning: '蚱蜢', sentence: 'The grasshopper jumps.', memoryTip: 'grass+hopper=草跳虫', image: '🦗', difficulty: 2, partOfSpeech: '名词' },
+        { id: 'pep6b-u4-w7', word: 'race', phonetic: '/reɪs/', meaning: '赛跑', sentence: 'We had a race.', memoryTip: 'race=赛跑', image: '🏃', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep6b-u4-w8', word: 'winner', phonetic: '/ˈwɪnər/', meaning: '获胜者', sentence: 'He is the winner.', memoryTip: 'win+n er=赢家', image: '🏆', difficulty: 2, partOfSpeech: '名词' },
+      ],
+    },
+    {
+      id: 'unit5',
+      name: 'Unit 5 Nature and change',
+      words: [
+        { id: 'pep6b-u5-w1', word: 'rule', phonetic: '/ruːl/', meaning: '规则', sentence: 'Follow the rules.', memoryTip: 'rule=规则', image: '📋', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep6b-u5-w2', word: 'keep', phonetic: '/kiːp/', meaning: '保持', sentence: 'Keep quiet.', memoryTip: 'keep=保持', image: '🤫', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u5-w3', word: 'climb', phonetic: '/klaɪm/', meaning: '爬', sentence: 'Climb carefully.', memoryTip: 'climb=爬', image: '🧗', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u5-w4', word: 'share', phonetic: '/ʃer/', meaning: '分享', sentence: 'Share with others.', memoryTip: 'share=分享', image: '🤝', difficulty: 1, partOfSpeech: '动词' },
+        { id: 'pep6b-u5-w5', word: 'careful', phonetic: '/ˈkerfl/', meaning: '小心的', sentence: 'Be careful.', memoryTip: 'care+ful=小心的', image: '⚠️', difficulty: 2, partOfSpeech: '形容词' },
+        { id: 'pep6b-u5-w6', word: 'outside', phonetic: '/ˌaʊtˈsaɪd/', meaning: '在外面', sentence: 'Play outside.', memoryTip: 'out+side=外面', image: '🌳', difficulty: 1, partOfSpeech: '副词' },
+      ],
+    },
+    {
+      id: 'unit6',
+      name: 'Unit 6 A farewell party',
+      words: [
+        { id: 'pep6b-u6-w1', word: 'graduate', phonetic: '/ˈɡrædʒʊeɪt/', meaning: '毕业', sentence: 'We will graduate soon.', memoryTip: 'graduate=毕业', image: '🎓', difficulty: 2, partOfSpeech: '动词' },
+        { id: 'pep6b-u6-w2', word: 'together', phonetic: '/təˈɡeðər/', meaning: '一起', sentence: 'We will study together.', memoryTip: 'together=一起', image: '👫', difficulty: 2, partOfSpeech: '副词' },
+        { id: 'pep6b-u6-w3', word: 'promise', phonetic: '/ˈprɒmɪs/', meaning: '承诺', sentence: 'I promise.', memoryTip: 'promise=承诺', image: '🤞', difficulty: 2, partOfSpeech: '动词' },
+        { id: 'pep6b-u6-w4', word: 'hope', phonetic: '/hoʊp/', meaning: '希望', sentence: 'I hope you are happy.', memoryTip: 'hope=希望', image: '🌟', difficulty: 2, partOfSpeech: '动词' },
+        { id: 'pep6b-u6-w5', word: 'wish', phonetic: '/wɪʃ/', meaning: '愿望', sentence: 'Make a wish.', memoryTip: 'wish=愿望', image: '⭐', difficulty: 1, partOfSpeech: '名词' },
+        { id: 'pep6b-u6-w6', word: 'certainly', phonetic: '/ˈsɜːrtənli/', meaning: '当然', sentence: 'Certainly!', memoryTip: 'certain+ly=当然', image: '👍', difficulty: 2, partOfSpeech: '副词' },
+        { id: 'pep6b-u6-w7', word: 'forward', phonetic: '/ˈfɔːrwərd/', meaning: '向前', sentence: 'Look forward.', memoryTip: 'forward=向前', image: '➡️', difficulty: 2, partOfSpeech: '副词' },
+        { id: 'pep6b-u6-w8', word: 'memory', phonetic: '/ˈmeməri/', meaning: '回忆', sentence: 'Good memories.', memoryTip: 'memory=回忆', image: '📷', difficulty: 2, partOfSpeech: '名词' },
+      ],
+    },
+  ],
+};
