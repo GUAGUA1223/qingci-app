@@ -10,89 +10,53 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { foxImages } from '../../assets/images';
-import { colors } from '../../src/theme/colors';
 
 const { width } = Dimensions.get('window');
-
-// 星星数量和进度（模拟数据，后续可接store）
-const STAR_COUNT = 12;
-const TODAY_PROGRESS = 65;
 
 export default function PreschoolHome() {
   const router = useRouter();
 
-  const handleLearn = () => {
-    router.push('/preschool/learn');
-  };
-
-  const handleFoxHome = () => {
-    router.push('/fox-home');
-  };
-
-  const handleBack = () => {
-    router.push('/');
-  };
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* 顶部大图小狐狸 */}
+      {/* 顶部小狐狸+星星 */}
       <View style={styles.headerSection}>
-        <TouchableOpacity style={styles.backBtn} onPress={handleBack} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}>
-          <Text style={styles.backArrow}>{'<'}</Text>
+        <TouchableOpacity style={styles.backBtn} onPress={() => router.push('/')} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}>
+          <Text style={styles.backArrow}>{'‹'}</Text>
         </TouchableOpacity>
         <Image source={foxImages.happy} style={styles.foxImage} resizeMode="contain" />
-        {/* 星星数量 */}
         <View style={styles.starBadge}>
-          <Image source={require('../../assets/images/decorations/deco_star_lamp.jpg')} style={styles.starIcon} />
-          <Text style={styles.starCount}>{STAR_COUNT}</Text>
+          <Text style={styles.starEmoji}>⭐</Text>
+          <Text style={styles.starCount}>12</Text>
         </View>
       </View>
 
-      {/* 今日进度 */}
+      {/* 今日进度（简洁版，用图标不用文字） */}
       <View style={styles.progressSection}>
-        <View style={styles.progressRow}>
-          <Image source={require('../../assets/images/packs/pack_academic.jpg')} style={styles.progressIcon} />
-          <View style={styles.progressBarContainer}>
-            <View style={[styles.progressBar, { width: TODAY_PROGRESS + '%' }]} />
-          </View>
-          <Text style={styles.progressText}>{TODAY_PROGRESS}%</Text>
+        <View style={styles.progressBarContainer}>
+          <View style={[styles.progressBarFill, { width: '65%' }]} />
         </View>
-        <Text style={styles.progressLabel}>今日学习进度</Text>
+        <Text style={styles.progressEmoji}>📊</Text>
       </View>
 
-      {/* 3个大按钮区域 */}
+      {/* 3个大按钮 - 用emoji图标，不写文字说明 */}
       <View style={styles.buttonsSection}>
-        {/* 开始学习 - 用小狐狸头像图标 */}
-        <TouchableOpacity style={styles.bigButton} onPress={handleLearn} activeOpacity={0.8}>
-          <Image source={foxImages.excited} style={styles.buttonIcon} />
-          <View style={styles.buttonTextRow}>
-            <Text style={styles.bigButtonLabel}>开始学习</Text>
-            <Text style={styles.bigButtonSubLabel}>听音选图趣味学</Text>
-          </View>
+        {/* 📚 开始学习 */}
+        <TouchableOpacity style={styles.bigButtonLearn} onPress={() => router.push('/preschool/learn')} activeOpacity={0.8}>
+          <Text style={styles.buttonEmoji}>📚</Text>
+          <Text style={styles.buttonLabel}>开始学习</Text>
         </TouchableOpacity>
 
-        {/* 学习进度 - 用书本图标 */}
-        <TouchableOpacity style={styles.bigButtonSecondary} onPress={() => {}} activeOpacity={0.8}>
-          <Image source={require('../../assets/images/packs/pack_culture.jpg')} style={styles.buttonIcon} />
-          <View style={styles.buttonTextRow}>
-            <Text style={styles.bigButtonLabelSecondary}>学习进度</Text>
-            <Text style={styles.bigButtonSubLabelSecondary}>查看已学单词</Text>
-          </View>
+        {/* 📊 学习进度 */}
+        <TouchableOpacity style={styles.bigButtonProgress} onPress={() => {}} activeOpacity={0.8}>
+          <Text style={styles.buttonEmoji}>📊</Text>
+          <Text style={styles.buttonLabelProgress}>学习进度</Text>
         </TouchableOpacity>
 
-        {/* 狐狸的家 - 用小狐狸 */}
-        <TouchableOpacity style={styles.bigButtonFox} onPress={handleFoxHome} activeOpacity={0.8}>
-          <Image source={foxImages.proud} style={styles.buttonIconFox} />
-          <View style={styles.buttonTextRow}>
-            <Text style={styles.bigButtonLabel}>狐狸的家</Text>
-            <Text style={styles.bigButtonSubLabelFox}>和小狐狸玩一玩</Text>
-          </View>
+        {/* 🏠 狐狸的家 */}
+        <TouchableOpacity style={styles.bigButtonFox} onPress={() => router.push('/fox-home')} activeOpacity={0.8}>
+          <Text style={styles.buttonEmoji}>🦊</Text>
+          <Text style={styles.buttonLabel}>狐狸的家</Text>
         </TouchableOpacity>
-      </View>
-
-      {/* 底部提示 */}
-      <View style={styles.footer}>
-        <Text style={styles.footerText}>轻词学前英语</Text>
       </View>
     </SafeAreaView>
   );
@@ -125,8 +89,8 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
   foxImage: {
-    width: 160,
-    height: 160,
+    width: 140,
+    height: 140,
     marginTop: 20,
   },
   starBadge: {
@@ -139,9 +103,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     gap: 6,
   },
-  starIcon: {
-    width: 24,
-    height: 24,
+  starEmoji: {
+    fontSize: 18,
   },
   starCount: {
     fontSize: 18,
@@ -149,18 +112,11 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   progressSection: {
-    paddingHorizontal: 24,
-    paddingTop: 24,
-    paddingBottom: 8,
-  },
-  progressRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-  },
-  progressIcon: {
-    width: 28,
-    height: 28,
+    paddingHorizontal: 24,
+    paddingTop: 20,
+    gap: 10,
   },
   progressBarContainer: {
     flex: 1,
@@ -169,35 +125,26 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     overflow: 'hidden',
   },
-  progressBar: {
+  progressBarFill: {
     height: '100%',
     backgroundColor: '#FF9ECD',
     borderRadius: 6,
   },
-  progressText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#FF9ECD',
-    minWidth: 45,
-    textAlign: 'right',
-  },
-  progressLabel: {
-    fontSize: 12,
-    color: '#999',
-    marginTop: 6,
-    textAlign: 'center',
+  progressEmoji: {
+    fontSize: 20,
   },
   buttonsSection: {
     flex: 1,
     paddingHorizontal: 24,
     paddingTop: 24,
     gap: 16,
+    justifyContent: 'center',
   },
-  bigButton: {
+  bigButtonLearn: {
     backgroundColor: '#FF9ECD',
     borderRadius: 24,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
@@ -207,27 +154,22 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
-  bigButtonSecondary: {
+  bigButtonProgress: {
     backgroundColor: '#FFFFFF',
     borderRadius: 24,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
     borderWidth: 2,
     borderColor: '#FFD93D',
-    shadowColor: '#FFD93D',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 4,
   },
   bigButtonFox: {
     backgroundColor: '#4ECDC4',
     borderRadius: 24,
-    paddingVertical: 20,
-    paddingHorizontal: 20,
+    paddingVertical: 24,
+    paddingHorizontal: 24,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
@@ -237,50 +179,17 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 5,
   },
-  buttonIcon: {
-    width: 64,
-    height: 64,
-    borderRadius: 16,
+  buttonEmoji: {
+    fontSize: 40,
   },
-  buttonIconFox: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-  },
-  buttonTextRow: {
-    flex: 1,
-  },
-  bigButtonLabel: {
-    fontSize: 20,
+  buttonLabel: {
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#FFFFFF',
   },
-  bigButtonSubLabel: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: 2,
-  },
-  bigButtonLabelSecondary: {
-    fontSize: 20,
+  buttonLabelProgress: {
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#FFD93D',
-  },
-  bigButtonSubLabelSecondary: {
-    fontSize: 12,
-    color: '#999',
-    marginTop: 2,
-  },
-  bigButtonSubLabelFox: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.8)',
-    marginTop: 2,
-  },
-  footer: {
-    paddingVertical: 20,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: 14,
-    color: '#CCC',
   },
 });
