@@ -1,0 +1,7 @@
+npm error code ENOTEMPTY
+npm error syscall rename
+npm error path /app/data/所有对话/主对话/qingci-new/node_modules/metro
+npm error dest /app/data/所有对话/主对话/qingci-new/node_modules/.metro-VR4iVk3C
+npm error errno -39
+npm error ENOTEMPTY: directory not empty, rename '/app/data/所有对话/主对话/qingci-new/node_modules/metro' -> '/app/data/所有对话/主对话/qingci-new/node_modules/.metro-VR4iVk3C'
+npm error A complete log of this run can be found in: /root/.npm/_logs/2026-05-20T11_21_46_749Z-debug-0.log

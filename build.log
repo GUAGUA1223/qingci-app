@@ -1,0 +1,12 @@
+★ eas-cli@18.13.0 is now available.
+To upgrade, run:
+npm install -g eas-cli
+Proceeding with outdated version.
+
+(node:11653) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+Failed to read the app config from the project using "npx expo config" command: npx expo config --json exited with non-zero code: 127.
+Falling back to the version of "@expo/config" shipped with the EAS CLI.
+EAS project not configured.
+Must configure EAS project by running 'eas init' before this command can be run in non-interactive mode.
+    Error: build command failed.
