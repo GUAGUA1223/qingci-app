@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "qingci-app",
+    "name": "轻词",
     "slug": "qingci-app",
-    "scheme": "qingciapp",
+    "scheme": "qingci",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "newArchEnabled": false,
     "platforms": ["android", "ios", "web"],
     "splash": {
       "image": "./assets/splash-icon.png",
@@ -24,7 +24,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.qingciapp"
+      "package": "com.qingci.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,10 +34,19 @@
       "expo-av"
     ],
     "extra": {
+      "router": {
+        "initialRouteName": "splash"
+      },
       "eas": {
         "projectId": "9b5ca370-8aa1-4086-8720-698f74ccb906"
       }
     },
-    "owner": "gua_gua1223"
+    "owner": "gua_gua1223",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/9b5ca370-8aa1-4086-8720-698f74ccb906"
+    }
   }
 }
