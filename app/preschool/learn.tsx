@@ -456,13 +456,13 @@ export default function PreschoolLearn() {
       {/* 状态提示 */}
       <View style={styles.statusContainer}>
         {gameState.phase === 'LISTENING' && (
-          <Text style={styles.statusText}>听一听，是什么？</Text>
+          <Text style={styles.statusText}>听一听</Text>
         )}
         {gameState.phase === 'CHOOSING' && (
-          <Text style={styles.statusText}>选一选，哪个是{currentWord?.meaning}？</Text>
+          <Text style={styles.statusText}>选一选</Text>
         )}
         {gameState.phase === 'CORRECT' && (
-          <Text style={styles.statusTextCorrect}>答对了！再听一遍</Text>
+          <Text style={styles.statusTextCorrect}>答对了</Text>
         )}
         {gameState.phase === 'WRONG' && (
           <Text style={styles.statusTextWrong}>再试试哦</Text>
