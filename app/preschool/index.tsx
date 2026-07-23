@@ -57,7 +57,7 @@ export default function PreschoolHome() {
           </View>
           <Text style={styles.progressText}>{TODAY_PROGRESS}%</Text>
         </View>
-        <Text style={styles.progressLabel}>今日学习进度</Text>
+        <Text style={styles.progressLabel}>今日进度</Text>
       </View>
 
       {/* 3个大按钮区域 */}
@@ -66,8 +66,8 @@ export default function PreschoolHome() {
         <TouchableOpacity style={styles.bigButton} onPress={handleLearn} activeOpacity={0.8}>
           <Image source={foxImages.excited} style={styles.buttonIcon} />
           <View style={styles.buttonTextRow}>
-            <Text style={styles.bigButtonLabel}>开始学习</Text>
-            <Text style={styles.bigButtonSubLabel}>听音选图趣味学</Text>
+            <Text style={styles.bigButtonLabel}>学习</Text>
+            <Text style={styles.bigButtonSubLabel}>听音·选图</Text>
           </View>
         </TouchableOpacity>
 
@@ -75,8 +75,8 @@ export default function PreschoolHome() {
         <TouchableOpacity style={styles.bigButtonSecondary} onPress={() => {}} activeOpacity={0.8}>
           <Image source={require('../../assets/images/packs/pack_culture.jpg')} style={styles.buttonIcon} />
           <View style={styles.buttonTextRow}>
-            <Text style={styles.bigButtonLabelSecondary}>学习进度</Text>
-            <Text style={styles.bigButtonSubLabelSecondary}>查看已学单词</Text>
+            <Text style={styles.bigButtonLabelSecondary}>进度</Text>
+            <Text style={styles.bigButtonSubLabelSecondary}>已学单词</Text>
           </View>
         </TouchableOpacity>
 
@@ -84,15 +84,15 @@ export default function PreschoolHome() {
         <TouchableOpacity style={styles.bigButtonFox} onPress={handleFoxHome} activeOpacity={0.8}>
           <Image source={foxImages.proud} style={styles.buttonIconFox} />
           <View style={styles.buttonTextRow}>
-            <Text style={styles.bigButtonLabel}>狐狸的家</Text>
-            <Text style={styles.bigButtonSubLabelFox}>和小狐狸玩一玩</Text>
+            <Text style={styles.bigButtonLabel}>家</Text>
+            <Text style={styles.bigButtonSubLabelFox}>和小狐狸玩</Text>
           </View>
         </TouchableOpacity>
       </View>
 
       {/* 底部提示 */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>轻词学前英语</Text>
+        <Text style={styles.footerText}>轻词</Text>
       </View>
     </SafeAreaView>
   );
