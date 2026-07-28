@@ -10,10 +10,9 @@ import {
   Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../../src/theme/colors';
 import { preschoolWords } from '../../src/data/preschoolWords';
-import { wordImages, getWordImage, getAllWordKeys } from '../../src/data/wordImages';
+import { getWordImage, getAllWordKeys } from '../../src/data/wordImages';
 import { speakPreschool, stopSpeaking, playEncourage, playWrong } from '../../src/utils/speech';
 import { foxImages } from '../../assets/images';
 import {
@@ -27,26 +26,22 @@ import {
 
 const { width } = Dimensions.get('window');
 
-// 阶段类型
 type LearnPhase = 'LISTENING' | 'CHOOSING' | 'CORRECT' | 'WRONG' | 'RESULT';
-
-// 狐狸状态
 type FoxState = 'idle' | 'listen' | 'correct' | 'wrong' | 'celebrate' | 'think';
 
 interface GameState {
   words: typeof preschoolWords;
   currentIndex: number;
-  correctStreak: number; // 当前单词连续正确次数
+  correctStreak: number;
   wrongStreak: number;
   phase: LearnPhase;
   isComplete: boolean;
   showResult: boolean;
   stars: number;
   foxState: FoxState;
-  favorited: boolean;
-  options: string[]; // 4个选项的单词
+  options: string[];
   selectedOption: string | null;
-  correctCount: number; // 总正确次数
+  correctCount: number;
 }
 
 function initGame(difficulty: number): GameState {
@@ -61,19 +56,15 @@ function initGame(difficulty: number): GameState {
     showResult: false,
     stars: 0,
     foxState: 'idle',
-    favorited: false,
     options: [],
     selectedOption: null,
     correctCount: 0,
   };
 }
 
-// 生成4个选项：1个正确答案 + 3个干扰项
 function generateOptions(correctWord: string, allWords: string[]): string[] {
   const options = [correctWord];
   const otherWords = allWords.filter(w => w !== correctWord);
-  
-  // 随机选3个干扰项
   while (options.length < 4 && otherWords.length > 0) {
     const randomIndex = Math.floor(Math.random() * otherWords.length);
     const word = otherWords.splice(randomIndex, 1)[0];
@@ -81,8 +72,6 @@ function generateOptions(correctWord: string, allWords: string[]): string[] {
       options.push(word);
     }
   }
-  
-  // 如果不够4个，再从所有key补充
   if (options.length < 4) {
     const allKeys = getAllWordKeys();
     for (const key of allKeys) {
@@ -92,14 +81,11 @@ function generateOptions(correctWord: string, allWords: string[]): string[] {
       }
     }
   }
-  
-  // 打乱顺序
   return options.sort(() => Math.random() - 0.5);
 }
 
 export default function PreschoolLearn() {
   const router = useRouter();
-  const insets = useSafeAreaInsets();
   const [engine] = useState(() => new DifficultyEngine('preschool', MIN_DIFFICULTY));
   const [gameState, setGameState] = useState<GameState>(() => {
     const initial = initGame(engine.getDifficulty());
@@ -108,44 +94,79 @@ export default function PreschoolLearn() {
       options: generateOptions(initial.words[0]?.image || '', getAllWordKeys()),
     };
   });
-
-  const [bounceAnim] = useState(new Animated.Value(0));
   const [celebrateScale] = useState(new Animated.Value(1));
   const [starAnims] = useState([new Animated.Value(0), new Animated.Value(0), new Animated.Value(0)]);
-
+  const [shakeAnim] = useState(new Animated.Value(0));
   const isMountedRef = useRef(true);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const playCountRef = useRef(0);
 
   const currentWord = gameState.words[gameState.currentIndex];
   const totalWords = gameState.words.length;
   const progress = ((gameState.currentIndex + 1) / totalWords) * 100;
   const progressText = `${gameState.currentIndex + 1}/${totalWords}`;
+  const canSkip = gameState.wrongStreak >= 3;
 
-  // 自动播放发音 - 进入页面后1秒播放
+  // 自动播放发音2遍
   useEffect(() => {
     if (!currentWord || gameState.isComplete) return;
-
-    // 1秒后自动播放发音
-    timerRef.current = setTimeout(() => {
+    playCountRef.current = 0;
+    
+    const playTwice = () => {
       if (isMountedRef.current) {
         setGameState(prev => ({ ...prev, foxState: 'listen', phase: 'LISTENING' }));
         speakPreschool(currentWord.word);
-      }
-    }, 1000);
-
-    return () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
+        playCountRef.current++;
+        
+        if (playCountRef.current < 2) {
+          timerRef.current = setTimeout(() => {
+            if (isMountedRef.current) {
+              speakPreschool(currentWord.word);
+              playCountRef.current++;
+              setTimeout(() => {
+                if (isMountedRef.current) {
+                  setGameState(prev => ({ ...prev, phase: 'CHOOSING', foxState: 'idle' }));
+                }
+              }, 1500);
+            }
+          }, 1500);
+        } else {
+          setTimeout(() => {
+            if (isMountedRef.current) {
+              setGameState(prev => ({ ...prev, phase: 'CHOOSING', foxState: 'idle' }));
+            }
+          }, 1500);
+        }
       }
     };
-  }, [gameState.currentIndex, currentWord?.word]);
+    
+    timerRef.current = setTimeout(playTwice, 800);
+    
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [gameState.currentIndex]);
 
-  // 选对动画
+  // 答对动画
   useEffect(() => {
     if (gameState.foxState === 'correct') {
       Animated.sequence([
         Animated.spring(celebrateScale, { toValue: 1.2, friction: 3, useNativeDriver: true }),
         Animated.spring(celebrateScale, { toValue: 1, friction: 3, useNativeDriver: true }),
+      ]).start();
+    }
+  }, [gameState.foxState]);
+
+  // 答错抖动
+  useEffect(() => {
+    if (gameState.foxState === 'wrong') {
+      Animated.sequence([
+        Animated.timing(shakeAnim, { toValue: 1, duration: 75, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -1, duration: 75, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 1, duration: 75, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: -1, duration: 75, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 1, duration: 75, useNativeDriver: true }),
+        Animated.timing(shakeAnim, { toValue: 0, duration: 75, useNativeDriver: true }),
       ]).start();
     }
   }, [gameState.foxState]);
@@ -156,36 +177,26 @@ export default function PreschoolLearn() {
       const animations = starAnims.slice(0, gameState.stars).map((anim, index) =>
         Animated.sequence([
           Animated.delay(index * 200),
-          Animated.spring(anim, {
-            toValue: 1,
-            friction: 3,
-            useNativeDriver: true,
-          }),
+          Animated.spring(anim, { toValue: 1, friction: 3, useNativeDriver: true }),
         ])
       );
       Animated.parallel(animations).start();
     }
   }, [gameState.showResult]);
 
-  // 处理选项点击
   const handleOptionPress = useCallback((word: string) => {
     if (gameState.phase !== 'CHOOSING' || !currentWord) return;
-
     const isCorrect = word === currentWord.image;
-
+    
     if (isCorrect) {
       stopSpeaking();
       const newCorrectStreak = gameState.correctStreak + 1;
       const newCorrectCount = gameState.correctCount + 1;
-
-      // 检查是否连续答对2次
+      
       if (newCorrectStreak >= 2) {
-        // 通过，进入下一个词
         const newIndex = gameState.currentIndex + 1;
         const isLevelComplete = newIndex >= gameState.words.length;
-
         if (isLevelComplete) {
-          // 关卡完成
           const stars = calculateStars(newCorrectCount / gameState.words.length);
           engine.adjustDifficulty(newCorrectCount, gameState.words.length);
           setGameState(prev => ({
@@ -199,7 +210,6 @@ export default function PreschoolLearn() {
             phase: 'RESULT',
           }));
         } else {
-          // 进入下一个词
           const nextWord = gameState.words[newIndex];
           const nextOptions = generateOptions(nextWord?.image || '', getAllWordKeys());
           setGameState(prev => ({
@@ -215,7 +225,6 @@ export default function PreschoolLearn() {
           }));
         }
       } else {
-        // 还需要再答一次
         setGameState(prev => ({
           ...prev,
           correctStreak: newCorrectStreak,
@@ -224,24 +233,19 @@ export default function PreschoolLearn() {
           phase: 'CORRECT',
           selectedOption: word,
         }));
-
-        // 播放鼓励音
         playEncourage();
-
-        // 2秒后再播一遍发音，进入下一轮
         setTimeout(() => {
           if (isMountedRef.current) {
             speakPreschool(currentWord.word);
             setTimeout(() => {
               if (isMountedRef.current) {
-                setGameState(prev => ({ ...prev, phase: 'CHOOSING', foxState: 'think', selectedOption: null }));
+                setGameState(prev => ({ ...prev, phase: 'CHOOSING', foxState: 'idle', selectedOption: null }));
               }
             }, 1000);
           }
-        }, 2000);
+        }, 1500);
       }
     } else {
-      // 选错了
       setGameState(prev => ({
         ...prev,
         wrongStreak: prev.wrongStreak + 1,
@@ -250,38 +254,63 @@ export default function PreschoolLearn() {
         phase: 'WRONG',
         selectedOption: word,
       }));
-
-      // 播放错误音
       playWrong();
-
-      // 1.5秒后显示正确答案，再播发音
       setTimeout(() => {
         if (isMountedRef.current) {
           speakPreschool(currentWord.word);
           setTimeout(() => {
             if (isMountedRef.current) {
-              setGameState(prev => ({ ...prev, phase: 'CHOOSING', foxState: 'think', selectedOption: null }));
+              setGameState(prev => ({ ...prev, phase: 'CHOOSING', foxState: 'idle', selectedOption: null }));
             }
           }, 1000);
         }
-      }, 1500);
+      }, 2000);
     }
   }, [gameState.phase, currentWord, gameState.correctStreak, gameState.correctCount, gameState.currentIndex, gameState.words]);
 
-  // 喇叭按钮 - 重播发音
   const handleReplay = useCallback(() => {
     if (!currentWord) return;
     stopSpeaking();
     setGameState(prev => ({ ...prev, foxState: 'listen' }));
     speakPreschool(currentWord.word);
+    setTimeout(() => {
+      if (isMountedRef.current) {
+        setGameState(prev => ({ ...prev, foxState: 'idle' }));
+      }
+    }, 1500);
   }, [currentWord]);
 
-  // 收藏按钮
-  const handleFavorite = useCallback(() => {
-    setGameState(prev => ({ ...prev, favorited: !prev.favorited }));
-  }, []);
+  const handleSkip = useCallback(() => {
+    if (!canSkip || !currentWord) return;
+    const newIndex = gameState.currentIndex + 1;
+    const isLevelComplete = newIndex >= gameState.words.length;
+    if (isLevelComplete) {
+      const stars = calculateStars(gameState.correctCount / gameState.words.length);
+      engine.adjustDifficulty(gameState.correctCount, gameState.words.length);
+      setGameState(prev => ({
+        ...prev,
+        isComplete: true,
+        showResult: true,
+        stars,
+        foxState: 'celebrate',
+        phase: 'RESULT',
+      }));
+    } else {
+      const nextWord = gameState.words[newIndex];
+      const nextOptions = generateOptions(nextWord?.image || '', getAllWordKeys());
+      setGameState(prev => ({
+        ...prev,
+        currentIndex: newIndex,
+        correctStreak: 0,
+        wrongStreak: 0,
+        phase: 'LISTENING',
+        foxState: 'idle',
+        options: nextOptions,
+        selectedOption: null,
+      }));
+    }
+  }, [canSkip, gameState.currentIndex, gameState.words, gameState.correctCount]);
 
-  // 下一关
   const handleNextLevel = () => {
     const initial = initGame(engine.getDifficulty());
     setGameState({
@@ -290,7 +319,6 @@ export default function PreschoolLearn() {
     });
   };
 
-  // 重来
   const handleRestart = () => {
     engine['currentDifficulty'] = MIN_DIFFICULTY;
     const initial = initGame(MIN_DIFFICULTY);
@@ -300,49 +328,35 @@ export default function PreschoolLearn() {
     });
   };
 
-  // 返回
   const handleBack = () => {
     isMountedRef.current = false;
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
+    if (timerRef.current) clearTimeout(timerRef.current);
     stopSpeaking();
     router.push('/preschool');
   };
 
-  // 获取选项图片
-  const getOptionImage = (word: string) => {
-    return getWordImage(word);
-  };
-
-  // 获取狐狸图片
   const getFoxImage = () => {
     switch (gameState.foxState) {
-      case 'correct':
-        return foxImages.happy;
-      case 'wrong':
-        return foxImages.encouraging;
-      case 'listen':
-        return foxImages.excited;
-      case 'think':
-        return foxImages.stage1;
-      case 'celebrate':
-        return foxImages.excited;
-      default:
-        return foxImages.stage0;
+      case 'correct': return foxImages.happy;
+      case 'wrong': return foxImages.encouraging;
+      case 'listen': return foxImages.excited;
+      case 'celebrate': return foxImages.proud;
+      default: return foxImages.stage0;
     }
   };
 
   // ========== 结果页 ==========
   if (gameState.showResult) {
+    const titleText = gameState.stars >= 3 ? '太棒啦!' : gameState.stars >= 2 ? '完成啦!' : '继续加油!';
+    const subtitleText = `今天学了${totalWords}个词`;
+    
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.resultContainer}>
-          {/* 庆祝的狐狸 */}
+          {/* 3D橙橙庆祝 */}
           <Animated.View style={{ transform: [{ scale: celebrateScale }] }}>
-            <Image source={foxImages.proud} style={styles.resultFoxImage} resizeMode="contain" />
+            <Image source={foxImages.main3d} style={styles.resultFoxImage} resizeMode="contain" />
           </Animated.View>
-
           {/* 星星 */}
           <View style={styles.starsContainer}>
             {[0, 1, 2].map(index => (
@@ -353,12 +367,10 @@ export default function PreschoolLearn() {
                   index >= gameState.stars && styles.starEmpty,
                   {
                     opacity: starAnims[index],
-                    transform: [
-                      { scale: starAnims[index].interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0.5, 1.2],
-                      })}
-                    ],
+                    transform: [{ scale: starAnims[index].interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0.5, 1.2],
+                    })}]
                   },
                 ]}
               >
@@ -366,38 +378,15 @@ export default function PreschoolLearn() {
               </Animated.View>
             ))}
           </View>
-
-          <Text style={styles.resultTitle}>
-            {gameState.stars >= 2 ? '太棒了' : '加油哦'}
-          </Text>
-          <Text style={styles.resultSubtitle}>
-            {gameState.stars >= 2 ? '你真是个小天才' : '继续努力吧'}
-          </Text>
-
-          {/* 按钮组 */}
+          <Text style={styles.resultTitle}>{titleText}</Text>
+          <Text style={styles.resultSubtitle}>{subtitleText}</Text>
+          {/* 按钮 */}
           <View style={styles.resultButtons}>
-            {engine.getDifficulty() < MAX_DIFFICULTY && (
-              <TouchableOpacity
-                style={styles.resultButtonPrimary}
-                onPress={handleNextLevel}
-                activeOpacity={0.8}
-              >
-                <Text style={styles.resultButtonText}>下一关</Text>
-              </TouchableOpacity>
-            )}
-            <TouchableOpacity
-              style={styles.resultButtonSecondary}
-              onPress={handleRestart}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.resultButtonTextSecondary}>再来一次</Text>
+            <TouchableOpacity style={styles.resultButtonPrimary} onPress={handleRestart} activeOpacity={0.8}>
+              <Text style={styles.resultButtonText}>再来一次</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.resultButtonHome}
-              onPress={handleBack}
-              activeOpacity={0.8}
-            >
-              <Text style={styles.resultButtonTextSecondary}>返回首页</Text>
+            <TouchableOpacity style={styles.resultButtonHome} onPress={handleBack} activeOpacity={0.8}>
+              <Text style={styles.resultButtonTextSecondary}>回家</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -406,83 +395,82 @@ export default function PreschoolLearn() {
   }
 
   // ========== 学习页 ==========
+  const feedbackText = gameState.phase === 'CORRECT' 
+    ? (gameState.correctStreak >= 2 ? '完全掌握!' : '太棒了!')
+    : gameState.phase === 'WRONG' ? '没关系' : '';
+
   return (
     <SafeAreaView style={styles.container}>
-      {/* 顶部进度 */}
-      <View style={styles.progressContainer}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={handleBack}
-          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
-        >
-          <Image source={require('../../assets/images/decorations/deco_arrow_left.jpg')} style={styles.arrowImage} />
+      {/* 顶部操作栏 */}
+      <View style={styles.topBar}>
+        <TouchableOpacity style={styles.topBtn} onPress={handleBack} hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}>
+          <Image source={require('../../assets/images/decorations/deco_arrow_left.jpg')} style={styles.topIcon} />
         </TouchableOpacity>
-
         <View style={styles.progressBarContainer}>
           <View style={[styles.progressBarFill, { width: progress + '%' }]} />
         </View>
-
-        <View style={styles.progressBadge}>
-          <Text style={styles.progressText}>{progressText}</Text>
-        </View>
-      </View>
-
-      {/* 小狐狸 */}
-      <View style={styles.foxContainer}>
-        <Image 
-          source={getFoxImage()}
-          style={styles.foxImage} 
-          resizeMode="contain" 
-        />
-      </View>
-
-      {/* 单词展示区 - 给家长看 */}
-      <View style={styles.wordSection}>
-        <View style={styles.wordCard}>
-          <Text style={styles.wordText}>{currentWord?.word}</Text>
-          <Text style={styles.meaningText}>{currentWord?.meaning}</Text>
-        </View>
-        
-        {/* 喇叭按钮 */}
-        <TouchableOpacity
-          style={styles.speakerButton}
-          onPress={handleReplay}
-          activeOpacity={0.8}
+        <Text style={styles.progressText}>{progressText}</Text>
+        <TouchableOpacity 
+          style={[styles.topBtn, canSkip && styles.skipBtnActive]} 
+          onPress={handleSkip}
+          disabled={!canSkip}
+          hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
         >
-          <Image source={require('../../assets/images/packs/pack_academic.jpg')} style={styles.speakerImage} />
+          <Image 
+            source={require('../../assets/images/decorations/deco_arrow_left.jpg')} 
+            style={[styles.topIcon, canSkip ? {} : { opacity: 0.3 }]} 
+          />
         </TouchableOpacity>
       </View>
 
-      {/* 状态提示 */}
-      <View style={styles.statusContainer}>
-        {gameState.phase === 'LISTENING' && (
-          <Text style={styles.statusText}>听一听</Text>
-        )}
-        {gameState.phase === 'CHOOSING' && (
-          <Text style={styles.statusText}>选一选</Text>
-        )}
-        {gameState.phase === 'CORRECT' && (
-          <Text style={styles.statusTextCorrect}>答对了</Text>
-        )}
-        {gameState.phase === 'WRONG' && (
-          <Text style={styles.statusTextWrong}>再试试哦</Text>
-        )}
+      {/* 橙橙反馈区 */}
+      <View style={styles.foxFeedbackSection}>
+        <View style={styles.foxCard}>
+          <Animated.View style={{
+            transform: [{ scale: celebrateScale }, { translateX: shakeAnim.interpolate({
+              inputRange: [-1, 0, 1],
+              outputRange: [-4, 0, 4],
+            })}]
+          }}>
+            <Image source={getFoxImage()} style={styles.foxFeedbackImage} resizeMode="contain" />
+          </Animated.View>
+          {feedbackText ? (
+            <Text style={[
+              styles.feedbackText,
+              gameState.phase === 'CORRECT' && styles.feedbackCorrect,
+              gameState.phase === 'WRONG' && styles.feedbackWrong,
+            ]}>
+              {feedbackText}
+            </Text>
+          ) : null}
+        </View>
       </View>
 
-      {/* 4个选项网格 2x2 */}
+      {/* 单词显示区 */}
+      <View style={styles.wordSection}>
+        <View style={styles.wordCard}>
+          <Text style={styles.wordText}>{currentWord?.word}</Text>
+          <TouchableOpacity style={styles.speakerButton} onPress={handleReplay} activeOpacity={0.8}>
+            <Image source={require('../../assets/images/packs/pack_academic.jpg')} style={styles.speakerImage} />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* 2x2选项网格 */}
       <View style={styles.optionsGrid}>
         {gameState.options.slice(0, 4).map((word, index) => {
           const isSelected = gameState.selectedOption === word;
           const isCorrect = word === currentWord?.image;
           const showCorrect = gameState.phase === 'WRONG' && isCorrect;
-          const image = getOptionImage(word);
+          const image = getWordImage(word);
           
           return (
             <TouchableOpacity
               key={index}
               style={[
                 styles.optionCard,
-                isSelected && styles.optionSelected,
+                isSelected && gameState.phase === 'CORRECT' && styles.optionCorrect,
+                isSelected && gameState.phase === 'WRONG' && styles.optionWrong,
                 showCorrect && styles.optionHighlighted,
               ]}
               onPress={() => handleOptionPress(word)}
@@ -496,170 +484,110 @@ export default function PreschoolLearn() {
                   <Text style={styles.optionPlaceholderText}>{word}</Text>
                 </View>
               )}
-              {showCorrect && (
-                <View style={styles.correctBadge}>
-                  <Text style={styles.correctBadgeText}>正确</Text>
-                </View>
-              )}
             </TouchableOpacity>
           );
         })}
       </View>
 
-      {/* 底部按钮 */}
-      <View style={styles.bottomButtons}>
-        {/* 收藏 */}
-        <TouchableOpacity
-          style={[styles.bottomButton, gameState.favorited && styles.bottomButtonActive]}
-          onPress={handleFavorite}
-          activeOpacity={0.8}
-        >
-          <Image 
-            source={gameState.favorited ? foxImages.proud : foxImages.stage0} 
-            style={styles.bottomButtonIcon} 
+      {/* 本题答题进度圆点 */}
+      <View style={styles.wordProgressDots}>
+        {[0, 1].map(i => (
+          <View
+            key={i}
+            style={[
+              styles.wordDot,
+              i < gameState.correctStreak ? styles.wordDotActive : styles.wordDotInactive,
+            ]}
           />
-          <Text style={styles.bottomButtonLabel}>{gameState.favorited ? '已收藏' : '收藏'}</Text>
-        </TouchableOpacity>
+        ))}
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF5F8',
-  },
-  // 进度条
-  progressContainer: {
+  container: { flex: 1, backgroundColor: '#FFF5F8' },
+  topBar: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingTop: 10,
-    gap: 12,
+    height: 44,
+    gap: 8,
   },
-  backButton: {
-    padding: 4,
-  },
-  arrowImage: {
-    width: 32,
-    height: 32,
-  },
+  topBtn: { padding: 4 },
+  topIcon: { width: 24, height: 24 },
+  skipBtnActive: { backgroundColor: '#FFE5EF', borderRadius: 12 },
   progressBarContainer: {
     flex: 1,
-    height: 10,
-    backgroundColor: '#FFE5EF',
-    borderRadius: 5,
+    height: 6,
+    backgroundColor: '#FFE0EC',
+    borderRadius: 3,
     overflow: 'hidden',
   },
-  progressBarFill: {
-    height: '100%',
-    backgroundColor: '#FF9ECD',
-    borderRadius: 5,
-  },
-  progressBadge: {
-    backgroundColor: '#FFD93D',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  progressText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333',
-  },
-  // 小狐狸
-  foxContainer: {
+  progressBarFill: { height: '100%', backgroundColor: '#FF9ECD', borderRadius: 3 },
+  progressText: { fontSize: 12, fontWeight: '600', color: '#FF9ECD', minWidth: 30, textAlign: 'right' },
+  
+  foxFeedbackSection: { alignItems: 'center', marginTop: 8 },
+  foxCard: {
     alignItems: 'center',
-    marginTop: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    shadowColor: '#FF9ECD',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
   },
-  foxImage: {
-    width: 100,
-    height: 100,
-  },
-  // 单词区
-  wordSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 12,
-    marginTop: 16,
-    paddingHorizontal: 16,
-  },
+  foxFeedbackImage: { width: 48, height: 48 },
+  feedbackText: { fontSize: 14, marginTop: 4, fontWeight: '600' },
+  feedbackCorrect: { color: '#FF9ECD' },
+  feedbackWrong: { color: '#FF6B7A' },
+
+  wordSection: { paddingHorizontal: 20, marginTop: 12 },
   wordCard: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     alignItems: 'center',
+    shadowColor: 'rgba(255,158,205,0.12)',
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 8,
+    elevation: 3,
   },
-  wordText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FF9ECD',
-  },
-  meaningText: {
-    fontSize: 16,
-    color: '#999',
-  },
-  speakerButton: {
-    width: 44,
-    height: 44,
-  },
-  speakerImage: {
-    width: 44,
-    height: 44,
-  },
-  // 状态提示
-  statusContainer: {
-    alignItems: 'center',
-    marginTop: 12,
-    marginBottom: 16,
-  },
-  statusText: {
-    fontSize: 18,
-    color: '#666',
-  },
-  statusTextCorrect: {
-    fontSize: 18,
-    color: '#4ECDC4',
-    fontWeight: '600',
-  },
-  statusTextWrong: {
-    fontSize: 18,
-    color: '#FF9ECD',
-    fontWeight: '600',
-  },
-  // 选项网格
+  wordText: { fontSize: 28, fontWeight: 'bold', color: '#4A3236' },
+  speakerButton: { marginTop: 8 },
+  speakerImage: { width: 36, height: 36 },
+
   optionsGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: 20,
-    gap: 16,
+    paddingTop: 16,
+    gap: 12,
     justifyContent: 'center',
   },
   optionCard: {
-    width: (width - 72) / 2,
-    height: (width - 72) / 2,
-    backgroundColor: '#fff',
+    width: (width - 52) / 2,
+    height: (width - 52) / 2,
+    backgroundColor: '#FFFFFF',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: 'transparent',
+    shadowColor: 'rgba(255,158,205,0.08)',
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 6,
+    elevation: 2,
   },
-  optionSelected: {
-    borderColor: '#4ECDC4',
-  },
-  optionHighlighted: {
-    borderColor: '#4ECDC4',
-    backgroundColor: '#E8FCFB',
-  },
-  optionImage: {
-    width: '80%',
-    height: '80%',
-  },
+  optionCorrect: { borderColor: '#4ECDC4', backgroundColor: '#E8F8F7' },
+  optionWrong: { borderColor: '#FF6B7A', backgroundColor: '#FFF0F2' },
+  optionHighlighted: { borderColor: '#4ECDC4' },
+  optionImage: { width: '80%', height: '80%' },
   optionPlaceholder: {
     width: '80%',
     height: '80%',
@@ -668,126 +596,39 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  optionPlaceholderText: {
-    fontSize: 14,
-    color: '#FF9ECD',
-    fontWeight: '600',
-  },
-  correctBadge: {
-    position: 'absolute',
-    bottom: 8,
-    backgroundColor: '#4ECDC4',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 10,
-  },
-  correctBadgeText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  // 底部按钮
-  bottomButtons: {
+  optionPlaceholderText: { fontSize: 14, color: '#FF9ECD', fontWeight: '600' },
+
+  wordProgressDots: {
     flexDirection: 'row',
     justifyContent: 'center',
-    paddingVertical: 20,
-    gap: 20,
+    marginTop: 16,
+    gap: 6,
   },
-  bottomButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 25,
-    gap: 8,
-    borderWidth: 2,
-    borderColor: '#FFD93D',
-  },
-  bottomButtonActive: {
-    backgroundColor: '#FFD93D',
-  },
-  bottomButtonIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-  },
-  bottomButtonLabel: {
-    fontSize: 14,
-    color: '#333',
-    fontWeight: '600',
-  },
+  wordDot: { width: 8, height: 8, borderRadius: 4 },
+  wordDotActive: { backgroundColor: '#FF9ECD' },
+  wordDotInactive: { borderWidth: 1.5, borderColor: '#FFE0EC', backgroundColor: 'transparent' },
+
   // 结果页
-  resultContainer: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 24,
-  },
-  resultFoxImage: {
-    width: 180,
-    height: 180,
-  },
-  starsContainer: {
-    flexDirection: 'row',
-    marginTop: 20,
-    gap: 12,
-  },
-  starContainer: {
-    width: 50,
-    height: 50,
-  },
-  starImage: {
-    width: 50,
-    height: 50,
-  },
-  starEmpty: {
-    opacity: 0.3,
-  },
-  resultTitle: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#FF9ECD',
-    marginTop: 20,
-  },
-  resultSubtitle: {
-    fontSize: 16,
-    color: '#666',
-    marginTop: 8,
-  },
-  resultButtons: {
-    marginTop: 40,
-    gap: 16,
-    width: '100%',
-  },
+  resultContainer: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 },
+  resultFoxImage: { width: 120, height: 120 },
+  starsContainer: { flexDirection: 'row', marginTop: 20, gap: 12 },
+  starContainer: { width: 40, height: 40 },
+  starImage: { width: 40, height: 40 },
+  starEmpty: { opacity: 0.3 },
+  resultTitle: { fontSize: 24, fontWeight: 'bold', color: '#FF9ECD', marginTop: 20 },
+  resultSubtitle: { fontSize: 14, color: '#8B7A7E', marginTop: 8 },
+  resultButtons: { marginTop: 40, gap: 16, width: '100%' },
   resultButtonPrimary: {
-    backgroundColor: '#FF9ECD',
-    paddingVertical: 16,
-    borderRadius: 25,
-    alignItems: 'center',
-  },
-  resultButtonSecondary: {
     backgroundColor: '#FFD93D',
-    paddingVertical: 16,
-    borderRadius: 25,
+    height: 52,
+    borderRadius: 26,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   resultButtonHome: {
-    backgroundColor: '#fff',
-    paddingVertical: 16,
-    borderRadius: 25,
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#FFE5EF',
+    paddingVertical: 12,
   },
-  resultButtonText: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  resultButtonTextSecondary: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#333',
-  },
+  resultButtonText: { fontSize: 16, fontWeight: 'bold', color: '#FFFFFF' },
+  resultButtonTextSecondary: { fontSize: 14, color: '#B8A9AD' },
 });
