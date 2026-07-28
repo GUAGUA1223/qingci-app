@@ -109,7 +109,7 @@ export default function PreschoolHome() {
             activeOpacity={0.8}
           >
             <Image
-              source={require('../../assets/images/decorations/deco_star_lamp.jpg')}
+              source={require('../../assets/images/decorations/icons/icon_listen.png')')}
               style={styles.gridIcon}
             />
             <Text style={styles.gridLabel}>听一听</Text>
