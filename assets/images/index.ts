@@ -1,7 +1,7 @@
 // 图片资源映射 - 统一管理所有图片资源路径
-
 // 小狐狸角色图
 export const foxImages = {
+  main3d: require('./fox/fox_3d_main.jpg'),
   stage0: require('./fox/fox_stage0.jpg'),
   stage1: require('./fox/fox_stage1.jpg'),
   stage2: require('./fox/fox_stage2.jpg'),
@@ -15,7 +15,6 @@ export const foxImages = {
   encouraging: require('./fox/fox_encouraging.jpg'),
   graduate: require('./fox/fox_graduate.jpg'),
 };
-
 // 小狐狸动画帧
 export const foxAnimations = {
   idle: [
@@ -61,7 +60,6 @@ export const foxAnimations = {
     require('./animation/fox_think_4.jpg'),
   ],
 };
-
 // 成就徽章图
 export const badgeImages = {
   first_word: require('./badges/badge_first_word.jpg'),
@@ -74,7 +72,6 @@ export const badgeImages = {
   fox_ears: require('./badges/badge_fox_ears.jpg'),
   fox_wings: require('./badges/badge_fox_wings.jpg'),
 };
-
 // 词包图标
 export const packImages = {
   animals: require('./packs/pack_animals.jpg'),
@@ -87,7 +84,6 @@ export const packImages = {
   academic: require('./packs/pack_academic.jpg'),
   career: require('./packs/pack_career.jpg'),
 };
-
 // 装饰物图标
 export const decoImages = {
   bed: require('./decorations/deco_bed.jpg'),
