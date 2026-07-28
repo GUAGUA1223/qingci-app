@@ -18,11 +18,19 @@ import { AnimationType } from '../src/data/animations';
 import { foxImages, decoImages, badgeImages } from '../assets/images';
 
 const ENCOURAGEMENTS = {
-  happy: ['今天也要加油哦！', '小狐陪你一起学习！', '开始今天的冒险吧！'],
-  sleepy: ['休息一下再学习吧...', '睡饱了精神更好！', '别让小狐等太久哦'],
-  hungry: ['肚子饿了先吃点东西吧~', '小狐也想吃零食！', '补充能量再来挑战！'],
-  proud: ['太厉害了！继续保持！', '小狐为你骄傲！', '你就是词林高手！'],
-  excited: ['新词汇等着你呢！', '冲鸭！', '小狐已经迫不及待了！'],
+  happy: ['今天也要加油！', '橙橙陪你学！', '开始冒险吧！'],
+  sleepy: ['休息一下再学吧', '睡饱精神好！', '别等太久哦'],
+  hungry: ['先吃点东西吧', '橙橙也饿了！', '补充能量吧！'],
+  proud: ['太厉害了！', '橙橙为你骄傲！', '继续保持！'],
+  excited: ['新词等着你！', '冲！', '橙橙准备好了！'],
+};
+
+// 学段路由映射
+const STAGE_ROUTES: Record<string, string> = {
+  preschool: '/preschool/learn',
+  primary: '/primary/learn',
+  middle: '/middle/learn',
+  high: '/high/learn',
 };
 
 const getAnimationFromMood = (mood: string): AnimationType => {
@@ -44,6 +52,10 @@ export default function FoxHome() {
 
   const currentStage = FOX_STAGES[state.stage as keyof typeof FOX_STAGES] || FOX_STAGES[0];
   const foxAnimation = getAnimationFromMood(state.mood);
+
+  // 根据用户学段动态路由（默认学前）
+  const userStage = state.stage || 'preschool';
+  const learnRoute = STAGE_ROUTES[userStage] || STAGE_ROUTES.preschool;
 
   useEffect(() => {
     const encouragements = ENCOURAGEMENTS[state.mood as keyof typeof ENCOURAGEMENTS] || ENCOURAGEMENTS.happy;
@@ -71,11 +83,11 @@ export default function FoxHome() {
           <TouchableOpacity onPress={() => router.back()}>
             <Text style={styles.backBtn}>←</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>小狐狸的家</Text>
+          <Text style={styles.title}>橙橙的家</Text>
           <View style={{ width: 40 }} />
         </View>
 
-        {/* 小狐狸形象 */}
+        {/* 橙橙形象 */}
         <View style={styles.foxSection}>
           <AnimatedFox animation={foxAnimation} size={180} />
           <View style={styles.speechBubble}>
@@ -96,17 +108,17 @@ export default function FoxHome() {
           <View style={styles.statsGrid}>
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{todayWords}</Text>
-              <Text style={styles.statLabel}>已学词</Text>
+              <Text style={styles.statLabel}>已学</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{state.consecutiveDays}</Text>
-              <Text style={styles.statLabel}>连续天数</Text>
+              <Text style={styles.statLabel}>连续</Text>
             </View>
             <View style={styles.statDivider} />
             <View style={styles.statItem}>
               <Text style={styles.statValue}>{state.totalWords}</Text>
-              <Text style={styles.statLabel}>总学词</Text>
+              <Text style={styles.statLabel}>总计</Text>
             </View>
           </View>
           <View style={styles.progressSection}>
@@ -122,13 +134,13 @@ export default function FoxHome() {
 
         {/* 操作按钮 */}
         <View style={styles.actionsSection}>
-          <TouchableOpacity style={[styles.actionBtn, styles.primaryBtn]} onPress={() => router.push('/middle/learn')}>
+          <TouchableOpacity style={[styles.actionBtn, styles.primaryBtn]} onPress={() => router.push(learnRoute)}>
             <Text style={styles.actionEmoji}>🎯</Text>
-            <Text style={styles.actionText}>继续学习</Text>
+            <Text style={styles.actionText}>继续学</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[styles.actionBtn, styles.secondaryBtn]} onPress={() => setShowAchievements(true)}>
             <Text style={styles.actionEmoji}>🏆</Text>
-            <Text style={[styles.actionText, styles.secondaryText]}>成就墙</Text>
+            <Text style={[styles.actionText, styles.secondaryText]}>成就</Text>
           </TouchableOpacity>
         </View>
 
@@ -139,7 +151,7 @@ export default function FoxHome() {
           </TouchableOpacity>
           <TouchableOpacity style={[styles.actionBtn, styles.secondaryBtn]} onPress={() => router.push('/')}>
             <Text style={styles.actionEmoji}>🏠</Text>
-            <Text style={[styles.actionText, styles.secondaryText]}>返回首页</Text>
+            <Text style={[styles.actionText, styles.secondaryText]}>返回</Text>
           </TouchableOpacity>
         </View>
 
@@ -160,7 +172,7 @@ export default function FoxHome() {
               ) : null;
             })}
             {state.unlockedAchievements.length === 0 && (
-              <Text style={styles.noAchievement}>完成学习解锁成就</Text>
+              <Text style={styles.noAchievement}>完成学习解锁</Text>
             )}
           </View>
         </View>
@@ -214,7 +226,7 @@ export default function FoxHome() {
         <View style={styles.modalOverlay}>
           <View style={[styles.modalContent, { paddingBottom: insets.bottom + 20 }]}>
             <View style={styles.modalHeader}>
-              <Text style={styles.modalTitle}>小狐衣柜</Text>
+              <Text style={styles.modalTitle}>橙橙衣柜</Text>
               <TouchableOpacity onPress={() => setShowCostume(false)}>
                 <Text style={styles.closeBtn}>✕</Text>
               </TouchableOpacity>
@@ -236,7 +248,7 @@ export default function FoxHome() {
                 </View>
               ))}
             </View>
-            <Text style={styles.costumeHint}>坚持学习可解锁新外观</Text>
+            <Text style={styles.costumeHint}>坚持学习解锁新外观</Text>
           </View>
         </View>
       </Modal>
