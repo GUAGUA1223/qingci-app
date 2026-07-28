@@ -10,41 +10,24 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { foxImages } from '../../assets/images';
-
+import { colors } from '../../src/theme/colors';
 const { width } = Dimensions.get('window');
-
-// 主题色
-const COLORS = {
-  primary: '#5B7FFF',
-  secondary: '#8B9DC3',
-  background: '#F5F7FF',
-  card: '#FFFFFF',
-  text: '#333333',
-  accent: '#FF9A5C',
-};
-
-// 星星数量和进度（模拟数据，后续可接store）
 const STAR_COUNT = 24;
 const TODAY_PROGRESS = 75;
-
 export default function MiddleHome() {
   const router = useRouter();
-
   const handleLearn = () => {
     router.push('/middle/learn');
   };
-
   const handleFoxHome = () => {
     router.push('/fox-home');
   };
-
   const handleBack = () => {
     router.push('/');
   };
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* 顶部区域：小狐狸 + 返回按钮 */}
+      {/* 顶部：橙橙 + 返回 */}
       <View style={styles.headerSection}>
         <TouchableOpacity 
           style={styles.backBtn} 
@@ -53,16 +36,13 @@ export default function MiddleHome() {
         >
           <Image source={require('../../assets/images/decorations/deco_arrow_left.jpg')} style={styles.backArrow} />
         </TouchableOpacity>
-        
-        <Image source={foxImages.happy} style={styles.foxImage} resizeMode="contain" />
-        
+        <Image source={foxImages.main3d} style={styles.foxImage} resizeMode="contain" />
         {/* 星星徽章 */}
         <View style={styles.starBadge}>
           <Image source={require('../../assets/images/decorations/deco_star_lamp.jpg')} style={styles.starIcon} />
           <Text style={styles.starCount}>{STAR_COUNT}</Text>
         </View>
       </View>
-
       {/* 今日进度 */}
       <View style={styles.progressSection}>
         <View style={styles.progressRow}>
@@ -72,57 +52,52 @@ export default function MiddleHome() {
           </View>
           <Text style={styles.progressText}>{TODAY_PROGRESS}%</Text>
         </View>
-        <Text style={styles.progressLabel}>今日学习进度</Text>
+        <Text style={styles.progressLabel}>今日进度</Text>
       </View>
-
-      {/* 3个大按钮区域 */}
+      {/* 3个主按钮 */}
       <View style={styles.buttonsSection}>
         {/* 开始学习 */}
         <TouchableOpacity style={styles.bigButton} onPress={handleLearn} activeOpacity={0.8}>
           <Image source={foxImages.excited} style={styles.buttonIcon} />
           <View style={styles.buttonTextRow}>
             <Text style={styles.bigButtonLabel}>开始学习</Text>
-            <Text style={styles.bigButtonSubLabel}>看释义选单词</Text>
+            <Text style={styles.bigButtonSubLabel}>看义选词</Text>
           </View>
         </TouchableOpacity>
-
         {/* 学习进度 */}
         <TouchableOpacity style={styles.bigButtonSecondary} onPress={() => {}} activeOpacity={0.8}>
           <Image source={require('../../assets/images/packs/pack_culture.jpg')} style={styles.buttonIcon} />
           <View style={styles.buttonTextRow}>
-            <Text style={styles.bigButtonLabelSecondary}>学习进度</Text>
-            <Text style={styles.bigButtonSubLabelSecondary}>查看已学单词</Text>
+            <Text style={styles.bigButtonLabelSecondary}>已学</Text>
+            <Text style={styles.bigButtonSubLabelSecondary}>查看进度</Text>
           </View>
         </TouchableOpacity>
-
-        {/* 狐狸的家 */}
+        {/* 橙橙的家 */}
         <TouchableOpacity style={styles.bigButtonFox} onPress={handleFoxHome} activeOpacity={0.8}>
           <Image source={foxImages.proud} style={styles.buttonIconFox} />
           <View style={styles.buttonTextRow}>
-            <Text style={styles.bigButtonLabel}>狐狸的家</Text>
-            <Text style={styles.bigButtonSubLabelFox}>和小狐狸玩一玩</Text>
+            <Text style={styles.bigButtonLabel}>橙橙的家</Text>
+            <Text style={styles.bigButtonSubLabelFox}>和橙橙玩</Text>
           </View>
         </TouchableOpacity>
       </View>
-
-      {/* 底部提示 */}
+      {/* 底部 */}
       <View style={styles.footer}>
-        <Text style={styles.footerText}>轻词初中英语</Text>
+        <Text style={styles.footerText}>轻词初中</Text>
       </View>
     </SafeAreaView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: colors.middle.background,
   },
   headerSection: {
     alignItems: 'center',
     paddingTop: 10,
     paddingBottom: 20,
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.middle.primary,
     borderBottomLeftRadius: 40,
     borderBottomRightRadius: 40,
     position: 'relative',
@@ -185,13 +160,13 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: '100%',
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.middle.primary,
     borderRadius: 6,
   },
   progressText: {
     fontSize: 16,
     fontWeight: '600',
-    color: COLORS.primary,
+    color: colors.middle.primary,
     minWidth: 45,
     textAlign: 'right',
   },
@@ -208,21 +183,21 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   bigButton: {
-    backgroundColor: COLORS.primary,
+    backgroundColor: colors.middle.primary,
     borderRadius: 24,
     paddingVertical: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
-    shadowColor: COLORS.primary,
+    shadowColor: colors.middle.primary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 5,
   },
   bigButtonSecondary: {
-    backgroundColor: COLORS.card,
+    backgroundColor: '#FFFFFF',
     borderRadius: 24,
     paddingVertical: 20,
     paddingHorizontal: 20,
@@ -238,14 +213,14 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   bigButtonFox: {
-    backgroundColor: COLORS.accent,
+    backgroundColor: colors.middle.secondary,
     borderRadius: 24,
     paddingVertical: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
-    shadowColor: COLORS.accent,
+    shadowColor: colors.middle.secondary,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 8,
@@ -295,6 +270,6 @@ const styles = StyleSheet.create({
   },
   footerText: {
     fontSize: 14,
-    color: COLORS.secondary,
+    color: '#999',
   },
 });
