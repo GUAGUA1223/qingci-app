@@ -97,7 +97,7 @@ export default function PreschoolHome() {
             activeOpacity={0.8}
           >
             <Image
-              source={require('../../assets/images/packs/pack_academic.jpg')}
+              source={require('../../assets/images/icons/icon_learn.png')}
               style={styles.gridIcon}
             />
             <Text style={styles.gridLabel}>学习</Text>
@@ -123,7 +123,7 @@ export default function PreschoolHome() {
             activeOpacity={0.8}
           >
             <Image
-              source={require('../../assets/images/packs/pack_culture.jpg')}
+              source={require('../../assets/images/icons/icon_review.png')}
               style={styles.gridIcon}
             />
             <Text style={styles.gridLabel}>复习</Text>
@@ -135,7 +135,7 @@ export default function PreschoolHome() {
             activeOpacity={0.8}
           >
             <Image
-              source={require('../../assets/images/packs/pack_sport.jpg')}
+              source={require('../../assets/images/icons/icon_challenge.png')}
               style={styles.gridIcon}
             />
             <Text style={styles.gridLabel}>闯关</Text>
