@@ -6,9 +6,11 @@ import {
   StyleSheet,
   SafeAreaView,
   ScrollView,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { foxImages } from '../../assets/images';
 
 const TOTAL_LEVELS = 8;
 const UNLOCKED_LEVELS = 3; // 模拟已通关数
@@ -50,7 +52,7 @@ export default function PreschoolMap() {
           onPress={handleBack}
           hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
         >
-          <Text style={styles.backEmoji}>👈</Text>
+          <Image source={require('../../assets/images/decorations/deco_arrow_left.jpg')} style={styles.backIcon} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>闯关地图</Text>
         <View style={{ width: 40 }} />
@@ -73,9 +75,9 @@ export default function PreschoolMap() {
                 onPress={() => handleNodePress(level)}
                 activeOpacity={status === 'current' ? 0.7 : 1}
               >
-                {status === 'completed' && <Text style={styles.nodeStar}>⭐</Text>}
-                {status === 'locked' && <Text style={styles.nodeLock}>🔒</Text>}
-                {status === 'current' && <Text style={styles.nodeFox}>🦊</Text>}
+                {status === 'completed' && <Image source={require('../../assets/images/decorations/deco_star_lamp.jpg')} style={styles.nodeStarImg} />}
+                {status === 'locked' && <Image source={require('../../assets/images/icons/icon_challenge.png')} style={styles.nodeLockImg} />}
+                {status === 'current' && <Image source={foxImages.main3d} style={styles.nodeFoxImg} resizeMode="contain" />}
                 <Text style={[
                   styles.nodeNumber,
                   status === 'locked' && styles.nodeNumberLocked,
@@ -111,9 +113,9 @@ export default function PreschoolMap() {
                 onPress={() => handleNodePress(level)}
                 activeOpacity={status === 'current' ? 0.7 : 1}
               >
-                {status === 'completed' && <Text style={styles.nodeStar}>⭐</Text>}
-                {status === 'locked' && <Text style={styles.nodeLock}>🔒</Text>}
-                {status === 'current' && <Text style={styles.nodeFox}>🦊</Text>}
+                {status === 'completed' && <Image source={require('../../assets/images/decorations/deco_star_lamp.jpg')} style={styles.nodeStarImg} />}
+                {status === 'locked' && <Image source={require('../../assets/images/icons/icon_challenge.png')} style={styles.nodeLockImg} />}
+                {status === 'current' && <Image source={foxImages.main3d} style={styles.nodeFoxImg} resizeMode="contain" />}
                 <Text style={[
                   styles.nodeNumber,
                   status === 'locked' && styles.nodeNumberLocked,
@@ -127,7 +129,7 @@ export default function PreschoolMap() {
 
         {/* 总进度 */}
         <View style={styles.progressInfo}>
-          <Text style={styles.progressEmoji}>🏆</Text>
+          <Image source={require('../../assets/images/decorations/deco_star_lamp.jpg')} style={styles.progressIcon} />
           <Text style={styles.progressLabel}>
             已通关 {UNLOCKED_LEVELS}/{TOTAL_LEVELS} 关
           </Text>
@@ -136,7 +138,7 @@ export default function PreschoolMap() {
         {/* 提示 */}
         {currentLevel <= TOTAL_LEVELS && (
           <View style={styles.hintCard}>
-            <Text style={styles.hintText}>点击 🦊 进入第 {currentLevel} 关</Text>
+            <View style={styles.hintRow}><Image source={foxImages.main3d} style={styles.hintFoxImg} resizeMode="contain" /><Text style={styles.hintText}>点击进入第 {currentLevel} 关</Text></View>
           </View>
         )}
       </ScrollView>
@@ -164,8 +166,10 @@ const styles = StyleSheet.create({
     padding: 4,
     width: 40,
   },
-  backEmoji: {
-    fontSize: 26,
+  backIcon: {
+    width: 28,
+    height: 28,
+    tintColor: '#FFFFFF',
   },
   headerTitle: {
     fontSize: 20,
@@ -219,17 +223,22 @@ const styles = StyleSheet.create({
   nodeLocked: {
     backgroundColor: '#E0E0E0',
   },
-  nodeStar: {
-    fontSize: 22,
+  nodeStarImg: {
+    width: 20,
+    height: 20,
     position: 'absolute',
-    top: -8,
-    right: -4,
+    top: -6,
+    right: -2,
   },
-  nodeLock: {
-    fontSize: 24,
+  nodeLockImg: {
+    width: 24,
+    height: 24,
+    opacity: 0.4,
+    tintColor: '#999',
   },
-  nodeFox: {
-    fontSize: 28,
+  nodeFoxImg: {
+    width: 36,
+    height: 36,
   },
   nodeNumber: {
     fontSize: 18,
@@ -250,8 +259,9 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 20,
   },
-  progressEmoji: {
-    fontSize: 20,
+  progressIcon: {
+    width: 22,
+    height: 22,
   },
   progressLabel: {
     fontSize: 16,
@@ -264,6 +274,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 16,
+  },
+  hintRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  hintFoxImg: {
+    width: 20,
+    height: 20,
   },
   hintText: {
     fontSize: 16,
