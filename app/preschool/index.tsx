@@ -83,7 +83,7 @@ export default function PreschoolHome() {
           onPress={() => router.push('/preschool/learn')}
           activeOpacity={0.8}
         >
-          <Text style={styles.mainBtnIcon}>{'▶'}</Text>
+          <Image source={require('../../assets/images/icons/icon_learn.png')} style={styles.mainBtnIcon} />
           <Text style={styles.mainBtnText}>开始</Text>
         </TouchableOpacity>
       </View>
@@ -271,8 +271,9 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   mainBtnIcon: {
-    fontSize: 16,
-    color: '#FFFFFF',
+    width: 22,
+    height: 22,
+    tintColor: '#FFFFFF',
   },
   mainBtnText: {
     fontSize: 18,
