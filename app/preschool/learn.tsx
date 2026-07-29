@@ -348,7 +348,7 @@ export default function PreschoolLearn() {
   // ========== 结果页 ==========
   if (gameState.showResult) {
     const titleText = gameState.stars >= 3 ? '太棒啦!' : gameState.stars >= 2 ? '完成啦!' : '继续加油!';
-    const subtitleText = `今天学了${totalWords}个词`;
+    const subtitleText = `${totalWords}`;
     
     return (
       <SafeAreaView style={styles.container}>
