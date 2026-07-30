@@ -409,7 +409,11 @@ export default function PreschoolLearn() {
         <View style={styles.progressBarContainer}>
           <View style={[styles.progressBarFill, { width: progress + '%' }]} />
         </View>
-        <Text style={styles.progressText}>{progressText}</Text>
+        <View style={styles.progressDots}>
+          {Array.from({ length: totalWords }, (_, i) => (
+            <View key={i} style={[styles.progressDot, i <= gameState.currentIndex && styles.progressDotActive]} />
+          ))}
+        </View>
         <TouchableOpacity 
           style={[styles.topBtn, canSkip && styles.skipBtnActive]} 
           onPress={handleSkip}
