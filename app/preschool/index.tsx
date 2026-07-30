@@ -17,6 +17,7 @@ const { width } = Dimensions.get('window');
 const TODAY_WORDS = 3;
 const TOTAL_WORDS = 10;
 const STAR_COUNT = 12;
+const STREAK_DAYS = 5;
 
 export default function PreschoolHome() {
   const router = useRouter();
@@ -69,9 +70,11 @@ export default function PreschoolHome() {
                 ]}
               />
             </View>
-            <Text style={styles.progressCount}>
-              {TODAY_WORDS}/{TOTAL_WORDS}
-            </Text>
+            <View style={styles.progressDots}>
+              {Array.from({ length: TOTAL_WORDS }, (_, i) => (
+                <View key={i} style={[styles.progressDot, i < TODAY_WORDS && styles.progressDotActive]} />
+              ))}
+            </View>
           </View>
         </View>
       </View>
@@ -161,7 +164,7 @@ export default function PreschoolHome() {
             source={require('../../assets/images/decorations/deco_star_lamp.jpg')}
             style={styles.streakIcon}
           />
-          <Text style={styles.streakText}>5天</Text>
+          <Text style={styles.streakText}>{STREAK_DAYS}</Text>
         </View>
       </View>
     </SafeAreaView>
@@ -334,6 +337,9 @@ const styles = StyleSheet.create({
   dotInactive: {
     backgroundColor: '#FFE5EF',
   },
+  progressDots: { flexDirection: 'row', gap: 3, alignItems: 'center', marginLeft: 6 },
+  progressDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: '#FFE5EF' },
+  progressDotActive: { backgroundColor: '#FF9ECD' },
   streakBadge: {
     flexDirection: 'row',
     alignItems: 'center',
